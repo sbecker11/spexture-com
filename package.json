@@ -21,8 +21,8 @@
     "build": "react-scripts build",
     "test": "NODE_OPTIONS='--no-deprecation' react-scripts test",
     "test:coverage": "NODE_OPTIONS='--no-deprecation' react-scripts test --coverage --watchAll=false; node scripts/generate-coverage-markdown.js client; cd coverage-reports && pandoc -s --metadata title=\"Client Coverage Report\" -c \"data:text/css,table{border-collapse:collapse;width:100%}th,td{border:1px solid \\#ddd;padding:8px 12px;text-align:left}th{background:\\#1a1a2e;color:white}tr:nth-child(even){background:\\#f9f9f9}code{background:\\#e8e8e8;padding:2px 6px;border-radius:4px}\" client-coverage.md -o client-coverage.html || echo 'Pandoc not installed - HTML generation skipped'",
-    "test:integration": "./scripts/ensure-docker-services.sh && NODE_OPTIONS='--no-deprecation' REACT_APP_API_URL=http://localhost:3001/api react-scripts test --setupFilesAfterEnv=./src/setupTests.integration.js --testMatch='**/*.integration.test.js' --watchAll=false",
-    "test:integration:watch": "./scripts/ensure-docker-services.sh && NODE_OPTIONS='--no-deprecation' REACT_APP_API_URL=http://localhost:3001/api react-scripts test --setupFilesAfterEnv=./src/setupTests.integration.js --testMatch='**/*.integration.test.js'",
+    "test:integration": "./scripts/ensure-docker-services.sh && NODE_OPTIONS='--no-deprecation' SPEXTURE_APP_API_URL=${SPEXTURE_APP_API_URL:-http://localhost:3011/api} react-scripts test --setupFilesAfterEnv=./src/setupTests.integration.js --testMatch='**/*.integration.test.js' --watchAll=false",
+    "test:integration:watch": "./scripts/ensure-docker-services.sh && NODE_OPTIONS='--no-deprecation' SPEXTURE_APP_API_URL=${SPEXTURE_APP_API_URL:-http://localhost:3011/api} react-scripts test --setupFilesAfterEnv=./src/setupTests.integration.js --testMatch='**/*.integration.test.js'",
     "test:all": "npm test -- --watchAll=false && npm run test:integration",
     "test:e2e": "./scripts/test-e2e-setup.sh",
     "eject": "react-scripts eject",
@@ -39,12 +39,12 @@
     "db:restart": "docker compose restart postgres",
     "db:status": "docker compose ps postgres",
     "db:logs": "docker compose logs -f postgres",
-    "db:shell": "docker compose exec postgres psql -U ${POSTGRES_USER:-spexture_user} -d ${POSTGRES_DB:-spexture_com}",
-    "db:admin": "docker compose exec postgres psql -U ${POSTGRES_USER:-spexture_user} -d ${POSTGRES_DB:-spexture_com} -c \"SELECT email, role, name, is_active, created_at FROM users WHERE role = 'admin';\"",
+    "db:shell": "docker compose exec postgres psql -U ${SPEXTURE_POSTGRES_USER:-spexture_user} -d ${SPEXTURE_POSTGRES_DB:-spexture_com}",
+    "db:admin": "docker compose exec postgres psql -U ${SPEXTURE_POSTGRES_USER:-spexture_user} -d ${SPEXTURE_POSTGRES_DB:-spexture_com} -c \"SELECT email, role, name, is_active, created_at FROM users WHERE role = 'admin';\"",
     "server:restart": "./scripts/restart-server.sh",
-    "server:stop": "lsof -ti:3001 | xargs kill -9 2>/dev/null && echo '✓ Server stopped' || echo '✗ No server running on port 3001'",
+    "server:stop": "lsof -ti:${SPEXTURE_SERVER_PORT:-3011} | xargs kill -9 2>/dev/null && echo '✓ Server stopped' || echo '✗ No server running on port ${SPEXTURE_SERVER_PORT:-3011}'",
     "server:dev": "cd server && npm run dev",
-    "server:status": "curl -s http://localhost:3001/health 2>/dev/null && echo '✓ Server is running' || echo '✗ Server is not responding'"
+    "server:status": "curl -s http://localhost:${SPEXTURE_SERVER_PORT:-3011}/health 2>/dev/null && echo '✓ Server is running' || echo '✗ Server is not responding'"
   },
   "eslintConfig": {
     "extends": [

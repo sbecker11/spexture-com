@@ -14,6 +14,9 @@ import { skipIfServerUnavailable } from '../utils/serverCheck';
 // Use real fetch (not mocked)
 // Don't mock localStorage - use real one for integration tests
 
+// Get API URL from environment
+const API_URL = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
+
 describe('API Service Integration Tests', () => {
   let testUser = {
     name: 'Integration Test User',
@@ -44,7 +47,7 @@ describe('API Service Integration Tests', () => {
     if (authToken && userId) {
       try {
         // Try to delete test user (may fail if already deleted)
-        await fetch(`http://localhost:3001/api/users/${userId}`, {
+        await fetch(`${API_URL}/users/${userId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${authToken}`,
@@ -252,7 +255,7 @@ describe('API Service Integration Tests', () => {
 
         // Clean up other user
         try {
-          await fetch(`http://localhost:3001/api/users/${otherUser.user.id}`, {
+          await fetch(`${API_URL}/users/${otherUser.user.id}`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${otherUser.token}`,

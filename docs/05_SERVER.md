@@ -92,10 +92,10 @@ Create a `.env` file in the server directory:
 
 ```env
 # Server Configuration
-NODE_ENV=development
-PORT=3001
+SPEXTURE_NODE_ENV=development
+SPEXTURE_SERVER_PORT=3011
 
-# Database Configuration
+# Database Configuration (DB_* variables are set by docker-compose from SPEXTURE_POSTGRES_*)
 DB_HOST=postgres
 DB_PORT=5432  # Internal container port (host port is 5433)
 DB_USER=spexture_user
@@ -103,22 +103,22 @@ DB_PASSWORD=spexture_password
 DB_NAME=spexture_com
 
 # JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-JWT_EXPIRES_IN=24h
+SPEXTURE_JWT_SECRET=your-super-secret-jwt-key-change-in-production
+SPEXTURE_JWT_EXPIRES_IN=24h
 
 # Client Configuration
-CLIENT_URL=http://localhost:3000
+SPEXTURE_CLIENT_URL=http://localhost:3010
 ```
 
 ### Production Considerations
 
 **⚠️ Critical for Production:**
-1. **Change JWT_SECRET** to a strong random string:
+1. **Change SPEXTURE_JWT_SECRET** to a strong random string:
    ```bash
    node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
    ```
 2. **Use strong database password** (not `spexture_password`)
-3. **Set NODE_ENV=production**
+3. **Set SPEXTURE_NODE_ENV=production**
 4. **Enable HTTPS** and update CLIENT_URL
 5. **Set up proper logging** (not just console.log)
 6. **Implement rate limiting**
@@ -130,8 +130,8 @@ CLIENT_URL=http://localhost:3000
 
 ### Base URL
 
-- **Development**: http://localhost:3001
-- **API Base**: http://localhost:3001/api
+- **Development**: http://localhost:3011
+- **API Base**: http://localhost:3011/api
 
 ### Health Check
 
@@ -141,7 +141,7 @@ Check server health status.
 
 **Request:**
 ```bash
-curl http://localhost:3001/health
+curl http://localhost:3011/health
 ```
 
 **Response:**
@@ -244,7 +244,7 @@ Get all users (admin only).
 
 **Request:**
 ```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:3001/api/users
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:3011/api/users
 ```
 
 **Response** (200 OK):
@@ -272,7 +272,7 @@ Get current authenticated user profile.
 
 **Request:**
 ```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:3001/api/users/me
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:3011/api/users/me
 ```
 
 **Response** (200 OK):
@@ -295,7 +295,7 @@ Get user by ID (ownership check or admin).
 
 **Request:**
 ```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:3001/api/users/<USER_ID>
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:3011/api/users/<USER_ID>
 ```
 
 **Access Control:**
@@ -339,7 +339,7 @@ Delete user (soft delete - ownership check or admin).
 
 **Request:**
 ```bash
-curl -X DELETE -H "Authorization: Bearer <TOKEN>" http://localhost:3001/api/users/<USER_ID>
+curl -X DELETE -H "Authorization: Bearer <TOKEN>" http://localhost:3011/api/users/<USER_ID>
 ```
 
 **Response** (204 No Content)
@@ -400,7 +400,7 @@ List all users with filters, sorting, and pagination.
 **Request:**
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
-  "http://localhost:3001/api/admin/users?role=user&sortBy=last_login_at&sortOrder=desc&page=1&limit=10"
+  "http://localhost:3011/api/admin/users?role=user&sortBy=last_login_at&sortOrder=desc&page=1&limit=10"
 ```
 
 **Response** (200 OK):
@@ -432,7 +432,7 @@ Get detailed user information (admin only).
 
 **Request:**
 ```bash
-curl -H "Authorization: Bearer <TOKEN>" http://localhost:3001/api/admin/users/<USER_ID>
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:3011/api/admin/users/<USER_ID>
 ```
 
 **Response** (200 OK):
@@ -568,7 +568,7 @@ Get user's authentication activity logs.
 **Request:**
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
-  "http://localhost:3001/api/admin/users/<USER_ID>/activity?page=1&limit=20"
+  "http://localhost:3011/api/admin/users/<USER_ID>/activity?page=1&limit=20"
 ```
 
 **Response** (200 OK):
@@ -886,7 +886,7 @@ router.post('/login', logAuthEvent('login'), async (req, res) => {
 
 **✅ Do:**
 - Use HTTPS in production
-- Rotate JWT_SECRET regularly
+- Rotate SPEXTURE_JWT_SECRET regularly
 - Implement rate limiting
 - Add request logging
 - Monitor authentication logs
@@ -909,13 +909,13 @@ router.post('/login', logAuthEvent('login'), async (req, res) => {
 ### Health Check
 
 ```bash
-curl http://localhost:3001/health
+curl http://localhost:3011/health
 ```
 
 ### Register User
 
 ```bash
-curl -X POST http://localhost:3001/api/auth/register \
+curl -X POST http://localhost:3011/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",
@@ -927,7 +927,7 @@ curl -X POST http://localhost:3001/api/auth/register \
 ### Login
 
 ```bash
-curl -X POST http://localhost:3001/api/auth/login \
+curl -X POST http://localhost:3011/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@example.com",
@@ -939,13 +939,13 @@ curl -X POST http://localhost:3001/api/auth/login \
 
 ```bash
 TOKEN="your_jwt_token_here"
-curl -H "Authorization: Bearer $TOKEN" http://localhost:3001/api/users/me
+curl -H "Authorization: Bearer $TOKEN" http://localhost:3011/api/users/me
 ```
 
 ### Admin Login
 
 ```bash
-curl -X POST http://localhost:3001/api/auth/login \
+curl -X POST http://localhost:3011/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "admin@spexture-com.local",
@@ -957,13 +957,13 @@ curl -X POST http://localhost:3001/api/auth/login \
 
 ```bash
 ADMIN_TOKEN="your_admin_token_here"
-curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3001/api/admin/users
+curl -H "Authorization: Bearer $ADMIN_TOKEN" http://localhost:3011/api/admin/users
 ```
 
 ### Get Elevated Session (Admin)
 
 ```bash
-curl -X POST http://localhost:3001/api/admin/verify-password \
+curl -X POST http://localhost:3011/api/admin/verify-password \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"password": "Admin123!"}'
@@ -973,7 +973,7 @@ curl -X POST http://localhost:3001/api/admin/verify-password \
 
 ```bash
 ELEVATED_TOKEN="your_elevated_token_here"
-curl -X PUT http://localhost:3001/api/admin/users/<USER_ID>/role \
+curl -X PUT http://localhost:3011/api/admin/users/<USER_ID>/role \
   -H "Authorization: Bearer $ADMIN_TOKEN" \
   -H "X-Elevated-Token: $ELEVATED_TOKEN" \
   -H "Content-Type: application/json" \

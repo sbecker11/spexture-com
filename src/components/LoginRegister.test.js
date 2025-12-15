@@ -1155,6 +1155,24 @@ describe('LoginRegister', () => {
     describe('Branch coverage - API error handling', () => {
         beforeEach(() => {
             jest.clearAllMocks();
+            // Ensure mock globals are Jest mock functions
+            // If they don't exist or aren't Jest mocks, create new ones
+            if (!global.__mockLoginFn || typeof global.__mockLoginFn.mockRejectedValueOnce !== 'function') {
+                global.__mockLoginFn = jest.fn();
+                // Update the mocked module to use this mock
+                const apiModule = jest.requireMock('../services/api');
+                if (apiModule?.authAPI) {
+                    apiModule.authAPI.login = global.__mockLoginFn;
+                }
+            }
+            if (!global.__mockRegisterFn || typeof global.__mockRegisterFn.mockRejectedValueOnce !== 'function') {
+                global.__mockRegisterFn = jest.fn();
+                // Update the mocked module to use this mock
+                const apiModule = jest.requireMock('../services/api');
+                if (apiModule?.authAPI) {
+                    apiModule.authAPI.register = global.__mockRegisterFn;
+                }
+            }
         });
 
         it('should handle API error with message in login mode', async () => {

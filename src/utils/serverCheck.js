@@ -5,9 +5,9 @@
  * This is used to gracefully skip integration tests when the server is not available.
  */
 
-const SERVER_HEALTH_ENDPOINT = process.env.REACT_APP_API_URL 
-  ? process.env.REACT_APP_API_URL.replace('/api', '/health')
-  : 'http://localhost:3001/health';
+const SERVER_HEALTH_ENDPOINT = (process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL)
+  ? (process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL).replace('/api', '/health')
+  : 'http://localhost:3011/health';
 
 const SERVER_CHECK_TIMEOUT = 3000; // 3 seconds
 

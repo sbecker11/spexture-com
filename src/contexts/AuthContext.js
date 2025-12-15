@@ -76,7 +76,8 @@ export const AuthProvider = ({ children }) => {
   // Elevated session management (for admin sensitive operations)
   const requestElevatedSession = async (password) => {
     try {
-      const response = await fetch('http://localhost:3001/api/admin/verify-password', {
+      const apiUrl = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
+      const response = await fetch(`${apiUrl}/admin/verify-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

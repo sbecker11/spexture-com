@@ -47,7 +47,7 @@ try {
 }
 
 // Set API URL to Docker server
-process.env.REACT_APP_API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+process.env.REACT_APP_API_URL = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
 
 // Suppress console warnings for integration tests
 const originalWarn = console.warn;

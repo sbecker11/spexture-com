@@ -18,12 +18,17 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 MIGRATIONS_DIR="$PROJECT_ROOT/server/database/migrations"
 
+# Load environment variables from .env file if it exists
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    export $(grep -v '^#' "$PROJECT_ROOT/.env" | xargs)
+fi
+
 # Database connection details
-DB_USER="${POSTGRES_USER:-spexture_user}"
-DB_PASSWORD="${POSTGRES_PASSWORD:-spexture_password}"
-DB_NAME="${POSTGRES_DB:-spexture_com}"
-DB_HOST="${POSTGRES_HOST:-localhost}"
-DB_PORT="${POSTGRES_PORT:-5432}"
+DB_USER="${SPEXTURE_POSTGRES_USER:-spexture_user}"
+DB_PASSWORD="${SPEXTURE_POSTGRES_PASSWORD:-spexture_password}"
+DB_NAME="${SPEXTURE_POSTGRES_DB:-spexture_com}"
+DB_HOST="${SPEXTURE_DB_HOST:-localhost}"
+DB_PORT="${SPEXTURE_POSTGRES_PORT:-5433}"
 
 echo -e "${BLUE}=== Spexture-com - Database Migration Tool ===${NC}"
 echo ""
@@ -63,6 +68,68 @@ if ! docker ps | grep -q spexture_com_postgres; then
     sleep 5
 fi
 
+# Get the superuser from container environment (POSTGRES_USER)
+# When POSTGRES_USER is set, that user is the superuser (not 'postgres')
+SUPERUSER=$(docker exec spexture_com_postgres printenv POSTGRES_USER 2>/dev/null || echo "")
+
+# Get the default database name (POSTGRES_DB or fallback to postgres)
+# When POSTGRES_USER is set, PostgreSQL creates a database with POSTGRES_DB name
+DEFAULT_DB=$(docker exec spexture_com_postgres printenv POSTGRES_DB 2>/dev/null || echo "")
+
+# If POSTGRES_USER is set, use it as superuser and POSTGRES_DB as default database
+# Otherwise, fall back to 'postgres' user and 'postgres' database
+if [ -z "$SUPERUSER" ]; then
+    SUPERUSER="postgres"
+    DEFAULT_DB="postgres"
+else
+    # POSTGRES_USER is set, so use it and POSTGRES_DB
+    # If POSTGRES_DB is not set, use the username as database name
+    if [ -z "$DEFAULT_DB" ]; then
+        DEFAULT_DB="$SUPERUSER"
+    fi
+fi
+
+# Check if user exists, create if not
+echo -e "${BLUE}👤 Checking database user...${NC}"
+
+# If the superuser is the same as DB_USER, the user already exists (created by PostgreSQL)
+if [ "$SUPERUSER" = "$DB_USER" ]; then
+    echo -e "${GREEN}✅ User '$DB_USER' exists (superuser)${NC}"
+else
+    USER_EXISTS=$(docker exec spexture_com_postgres psql -U "$SUPERUSER" -d "$DEFAULT_DB" -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'" 2>/dev/null || echo "0")
+    
+    if [ "$USER_EXISTS" != "1" ]; then
+        echo -e "${YELLOW}⚠️  User '$DB_USER' does not exist. Creating...${NC}"
+        docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DEFAULT_DB" <<EOF
+CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
+ALTER USER $DB_USER CREATEDB;
+EOF
+        echo -e "${GREEN}✅ User '$DB_USER' created${NC}"
+    else
+        echo -e "${GREEN}✅ User '$DB_USER' exists${NC}"
+    fi
+fi
+
+# Check if database exists, create if not
+echo -e "${BLUE}📦 Checking database...${NC}"
+
+# If the default database is the same as DB_NAME, the database already exists (created by PostgreSQL)
+if [ "$DEFAULT_DB" = "$DB_NAME" ]; then
+    echo -e "${GREEN}✅ Database '$DB_NAME' exists (default database)${NC}"
+else
+    DB_EXISTS=$(docker exec spexture_com_postgres psql -U "$SUPERUSER" -d "$DEFAULT_DB" -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" 2>/dev/null || echo "0")
+    
+    if [ "$DB_EXISTS" != "1" ]; then
+        echo -e "${YELLOW}⚠️  Database '$DB_NAME' does not exist. Creating...${NC}"
+        docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DEFAULT_DB" <<EOF
+CREATE DATABASE $DB_NAME OWNER $DB_USER;
+EOF
+        echo -e "${GREEN}✅ Database '$DB_NAME' created${NC}"
+    else
+        echo -e "${GREEN}✅ Database '$DB_NAME' exists${NC}"
+    fi
+fi
+
 # Test database connection
 echo -e "${BLUE}🔌 Testing database connection...${NC}"
 if ! docker exec spexture_com_postgres pg_isready -U "$DB_USER" -d "$DB_NAME" > /dev/null 2>&1; then
@@ -74,7 +141,8 @@ echo ""
 
 # Create migrations tracking table if it doesn't exist
 echo -e "${BLUE}📊 Checking migrations tracking table...${NC}"
-docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
+# Use SUPERUSER to create the table, then grant permissions to DB_USER
+docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DB_NAME" <<EOF
 CREATE TABLE IF NOT EXISTS schema_migrations (
     id SERIAL PRIMARY KEY,
     migration_number VARCHAR(10) NOT NULL UNIQUE,
@@ -85,7 +153,7 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 EOF
 
 # Check if migration already applied
-ALREADY_APPLIED=$(docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" -t -c \
+ALREADY_APPLIED=$(docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DB_NAME" -t -c \
     "SELECT COUNT(*) FROM schema_migrations WHERE migration_number = '$MIGRATION_NUM';")
 
 if [ "$ALREADY_APPLIED" -gt 0 ]; then
@@ -130,13 +198,13 @@ sed "s|\$2b\$10\$rZ5LkH8K8xJQK5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K|$ADMIN_HA
 echo -e "${BLUE}🚀 Running migration...${NC}"
 echo ""
 
-if docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" < "$TEMP_MIGRATION"; then
+if docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DB_NAME" < "$TEMP_MIGRATION"; then
     echo ""
     echo -e "${GREEN}✅ Migration completed successfully!${NC}"
     
     # Record migration
     MIGRATION_NAME=$(basename "$MIGRATION_PATH" .sql | cut -d'_' -f2-)
-    docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
+    docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DB_NAME" <<EOF
 INSERT INTO schema_migrations (migration_number, migration_name)
 VALUES ('$MIGRATION_NUM', '$MIGRATION_NAME')
 ON CONFLICT (migration_number) DO UPDATE
@@ -172,7 +240,7 @@ rm -f "$TEMP_MIGRATION"
 # Show applied migrations
 echo ""
 echo -e "${BLUE}📋 Applied migrations:${NC}"
-docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" -c \
+docker exec -i spexture_com_postgres psql -U "$SUPERUSER" -d "$DB_NAME" -c \
     "SELECT migration_number, migration_name, applied_at FROM schema_migrations ORDER BY applied_at;"
 
 echo ""

@@ -36,8 +36,8 @@ If you get "port already in use" errors:
 
 **Check what's using the port:**
 ```bash
-lsof -i :3000  # React client
-lsof -i :3001  # API server
+lsof -i :3010  # React client (3000 reserved for react-super-app)
+lsof -i :3011  # API server (3001 reserved for react-super-app)
 lsof -i :5432  # PostgreSQL
 ```
 
@@ -179,8 +179,8 @@ cd server && npm test
 **Check:**
 1. Server container is running: `docker-compose ps server`
 2. Server logs show no errors: `docker-compose logs server`
-3. API URL is correct: `http://localhost:3001/api`
-4. `.env` file has correct `REACT_APP_API_URL`
+3. API URL is correct: `http://localhost:3011/api`
+4. `.env` file has correct `SPEXTURE_APP_API_URL`
 
 ### API Returns 500 Errors
 
@@ -367,11 +367,11 @@ docker-compose logs
 docker-compose exec postgres pg_isready -U spexture_user
 
 # Test API health
-curl http://localhost:3001/health
+curl http://localhost:3011/health
 
 # Check port usage
-lsof -i :3000  # Client
-lsof -i :3001  # Server
+lsof -i :3010  # Client (3000 reserved for react-super-app)
+lsof -i :3011  # Server (3001 reserved for react-super-app)
 lsof -i :5432  # Database
 ```
 

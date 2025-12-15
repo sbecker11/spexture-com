@@ -29,7 +29,7 @@ Complete guide for setting up and running the Spexture-com using Docker Compose 
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │   Client     │  │   Server     │  │  PostgreSQL  │  │
 │  │  (React)     │  │  (Express)   │  │  (Database)  │  │
-│  │  Port 3000   │  │  Port 3001   │  │  Port 5432   │  │
+│  │  Port 3010   │  │  Port 3011   │  │  Port 5433   │  │
 │  └──────────────┘  └──────────────┘  └──────────────┘  │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
@@ -98,8 +98,8 @@ cp .env.example .env
 
 **Important:** Update the following in your `.env` file based on your environment:
 
-- **`NODE_ENV`**: Set to `development` (default), `testing` (for running tests), or `production` (for deployment)
-- **`REACT_APP_ENV`**: Set to match `NODE_ENV` for consistency
+- **`SPEXTURE_NODE_ENV`**: Set to `development` (default), `testing` (for running tests), or `production` (for deployment)
+- **`SPEXTURE_APP_ENV`**: Set to match `SPEXTURE_NODE_ENV` for consistency
 
 The `.env.example` file includes all default values:
 - Database configuration (PostgreSQL)
@@ -108,9 +108,9 @@ The `.env.example` file includes all default values:
 - JWT secret (⚠️ change this in production!)
 
 **Default values are fine for development**, but you should:
-- Update `NODE_ENV` and `REACT_APP_ENV` to `testing` when running tests
-- Update `NODE_ENV` and `REACT_APP_ENV` to `production` for deployment
-- Change `JWT_SECRET` to a secure random string in production (use: `openssl rand -base64 32`)
+- Update `SPEXTURE_NODE_ENV` and `SPEXTURE_APP_ENV` to `testing` when running tests
+- Update `SPEXTURE_NODE_ENV` and `SPEXTURE_APP_ENV` to `production` for deployment
+- Change `SPEXTURE_JWT_SECRET` to a secure random string in production (use: `openssl rand -base64 32`)
 
 ### 4. Start All Services
 
@@ -127,9 +127,9 @@ This will:
 
 ### 5. Access the Application
 
-- **React Client**: http://localhost:3000
-- **REST API Server**: http://localhost:3001
-- **API Health Check**: http://localhost:3001/health
+- **React Client**: http://localhost:3010
+- **REST API Server**: http://localhost:3011
+- **API Health Check**: http://localhost:3011/health
 - **PostgreSQL**: localhost:5433 (for direct database access, 5432 reserved for react-super-app)
 
 ---
@@ -149,9 +149,9 @@ This will:
   - Health checks enabled
 
 ### Express REST API Server
-- **Port**: 3001
-- **Base URL**: http://localhost:3001
-- **API Base**: http://localhost:3001/api
+- **Port**: 3011 (3001 reserved for react-super-app)
+- **Base URL**: http://localhost:3011
+- **API Base**: http://localhost:3011/api
 - **Features**:
   - JWT authentication with bcrypt password hashing
   - User registration/login endpoints
@@ -163,11 +163,11 @@ This will:
   - Hot reload with nodemon (development)
 
 ### React Client
-- **Port**: 3000
-- **URL**: http://localhost:3000
+- **Port**: 3010 (3000 reserved for react-super-app)
+- **URL**: http://localhost:3010
 - **Features**:
   - Hot reload in development (webpack dev server)
-  - Environment variable support (REACT_APP_*)
+  - Environment variable support (SPEXTURE_APP_* mapped to REACT_APP_* for React)
   - API URL configuration
   - Optimized production builds
   - Error boundaries and loading states
@@ -478,20 +478,20 @@ docker compose exec server npm run migrate
 
 ```bash
 # Health check
-curl http://localhost:3001/health
+curl http://localhost:3011/health
 
 # Register user
-curl -X POST http://localhost:3001/api/auth/register \
+curl -X POST http://localhost:3011/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"name":"Test User","email":"test@example.com","password":"Test123!"}'
 
 # Login
-curl -X POST http://localhost:3001/api/auth/login \
+curl -X POST http://localhost:3011/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"Test123!"}'
 
 # Get current user (requires token from login)
-curl http://localhost:3001/api/users/me \
+curl http://localhost:3011/api/users/me \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
@@ -562,20 +562,20 @@ If it shows the file, file sharing is configured correctly!
 
 ### Port Already in Use
 
-If port 3000, 3001, or 5432 is already in use:
+If port 3010, 3011, or 5433 is already in use:
 
 1. **Change ports in `.env` file:**
 ```bash
-CLIENT_PORT=3002
-SERVER_PORT=3003
-POSTGRES_PORT=5433
+SPEXTURE_CLIENT_PORT=3002
+SPEXTURE_SERVER_PORT=3003
+SPEXTURE_POSTGRES_PORT=5433
 ```
 
 2. **Or stop conflicting services:**
 ```bash
 # Find process using port
-lsof -i :3000
-lsof -i :3001
+lsof -i :3010
+lsof -i :3011
 lsof -i :5432
 
 # Kill process
@@ -658,12 +658,12 @@ docker compose up
 For production:
 
 ### 1. Update `.env` file:
-   - Change `JWT_SECRET` to a strong random string:
+   - Change `SPEXTURE_JWT_SECRET` to a strong random string:
      ```bash
      openssl rand -base64 32
      ```
-   - Update `NODE_ENV=production`
-   - Update `REACT_APP_ENV=production`
+   - Update `SPEXTURE_NODE_ENV=production`
+   - Update `SPEXTURE_APP_ENV=production`
    - Use secure passwords for database
    - Update `CLIENT_URL` to production domain
 
@@ -690,7 +690,7 @@ For production:
 
 ### 6. Security Checklist:
    - [ ] Change all default passwords
-   - [ ] Use strong JWT_SECRET
+   - [ ] Use strong SPEXTURE_JWT_SECRET
    - [ ] Enable HTTPS/SSL
    - [ ] Implement rate limiting
    - [ ] Add input sanitization

@@ -22,11 +22,11 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
 fi
 
 # Database configuration with defaults
-POSTGRES_USER=${POSTGRES_USER:-spexture_user}
-POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-spexture_password}
-POSTGRES_DB=${POSTGRES_DB:-spexture_com}
-POSTGRES_PORT=${POSTGRES_PORT:-5433}
-DB_HOST=${DB_HOST:-localhost}
+POSTGRES_USER=${SPEXTURE_POSTGRES_USER:-spexture_user}
+POSTGRES_PASSWORD=${SPEXTURE_POSTGRES_PASSWORD:-spexture_password}
+POSTGRES_DB=${SPEXTURE_POSTGRES_DB:-spexture_com}
+POSTGRES_PORT=${SPEXTURE_POSTGRES_PORT:-5433}
+DB_HOST=${SPEXTURE_DB_HOST:-localhost}
 
 # Source the port checker script
 source "$SCRIPT_DIR/check-port.sh"

@@ -51,7 +51,7 @@ const requireElevatedSession = (req, res, next) => {
 
   try {
     // Verify elevated token
-    const decoded = jwt.verify(elevatedToken, process.env.JWT_SECRET);
+    const decoded = jwt.verify(elevatedToken, process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET);
 
     // Check if token has expired
     if (Date.now() > decoded.expiresAt) {
@@ -196,7 +196,7 @@ const generateElevatedToken = (userId, role) => {
       expiresAt,
       elevated: true
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET,
     { expiresIn: '15m' }
   );
 

@@ -21,7 +21,7 @@ High-level overview of the Spexture-com features, architecture, and development 
 
 ```mermaid
 graph TB
-    subgraph "Client Layer (Port 3000)"
+    subgraph "Client Layer (Port 3010)"
         Browser[Web Browser]
         React[React App]
         AuthContext[Auth Context]
@@ -29,7 +29,7 @@ graph TB
         Services[API Services]
     end
 
-    subgraph "Server Layer (Port 3001)"
+    subgraph "Server Layer (Port 3011)"
         Express[Express Server]
         Auth[JWT Auth Middleware]
         RBAC[RBAC Middleware]
@@ -197,7 +197,7 @@ graph LR
 **Status**: ✅ Complete
 
 **Components**:
-- Express.js REST API server (Port 3001)
+- Express.js REST API server (Port 3011)
 - PostgreSQL database (Port 5432)
 - Docker Compose orchestration
 - Connection pooling

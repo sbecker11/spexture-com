@@ -123,8 +123,8 @@ router.post('/impersonate/:userId', authenticateToken, requireAdmin, requireElev
         email: targetUser.email,
         role: targetUser.role
       },
-      process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
-      { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+      process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET || 'your-super-secret-jwt-key-change-in-production',
+      { expiresIn: (process.env.JWT_EXPIRES_IN || process.env.SPEXTURE_JWT_EXPIRES_IN || '24h') }
     );
 
     // Log the impersonation action

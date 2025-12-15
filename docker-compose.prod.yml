@@ -8,17 +8,17 @@ services:
     image: postgres:15-alpine
     container_name: spexture_com_postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-spexture_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
-      POSTGRES_DB: ${POSTGRES_DB:-spexture_com}
+      POSTGRES_USER: ${SPEXTURE_POSTGRES_USER:-spexture_user}
+      POSTGRES_PASSWORD: ${SPEXTURE_POSTGRES_PASSWORD:-spexture_password}
+      POSTGRES_DB: ${SPEXTURE_POSTGRES_DB:-spexture_com}
     ports:
-      - "${POSTGRES_PORT:-5433}:5432"
+      - "${SPEXTURE_POSTGRES_PORT:-5433}:5432"
     volumes:
       - spexture_com_postgres_data:/var/lib/postgresql/data
     networks:
       - spexture_com_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spexture_user}"]
+      test: ["CMD-SHELL", "pg_isready -U ${SPEXTURE_POSTGRES_USER:-spexture_user}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,16 +32,16 @@ services:
     container_name: spexture_com_server
     environment:
       NODE_ENV: production
-      PORT: ${SERVER_PORT:-3001}
+      PORT: ${SPEXTURE_SERVER_PORT:-3011}
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: ${POSTGRES_USER:-spexture_user}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
-      DB_NAME: ${POSTGRES_DB:-spexture_com}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      DB_USER: ${SPEXTURE_POSTGRES_USER:-spexture_user}
+      DB_PASSWORD: ${SPEXTURE_POSTGRES_PASSWORD:-spexture_password}
+      DB_NAME: ${SPEXTURE_POSTGRES_DB:-spexture_com}
+      JWT_SECRET: ${SPEXTURE_JWT_SECRET}
+      JWT_EXPIRES_IN: ${SPEXTURE_JWT_EXPIRES_IN:-24h}
     ports:
-      - "${SERVER_PORT:-3001}:3001"
+      - "${SPEXTURE_SERVER_PORT:-3011}:3001"
     # NO VOLUMES - source files are baked into image
     depends_on:
       postgres:
@@ -59,10 +59,13 @@ services:
       dockerfile: Dockerfile.client.prod
     container_name: spexture_com_client
     environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://server:3001/api}
+      # Map SPEXTURE_APP_* to REACT_APP_* (React requires REACT_APP_ prefix)
+      REACT_APP_API_URL: ${SPEXTURE_APP_API_URL:-http://server:3011/api}
       REACT_APP_ENV: production
+      REACT_APP_ADMIN_EMAIL: ${SPEXTURE_APP_ADMIN_EMAIL:-admin@spexture-com.local}
+      REACT_APP_ADMIN_PASSWORD: ${SPEXTURE_APP_ADMIN_PASSWORD:-Admin123!}
     ports:
-      - "${CLIENT_PORT:-3000}:80"
+      - "${SPEXTURE_CLIENT_PORT:-3010}:80"
     # NO VOLUMES - source files are baked into image
     depends_on:
       - server

@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import './TestingCoverage.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
 
 const TestingCoverage = () => {
   const { isAdmin } = useAuth();
@@ -15,11 +15,6 @@ const TestingCoverage = () => {
   const [clientReport, setClientReport] = useState(null);
   const [serverReport, setServerReport] = useState(null);
   const [activeTab, setActiveTab] = useState('client'); // 'client' or 'server'
-  const [regenerating, setRegenerating] = useState(null); // 'client', 'server', or null
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [abortController, setAbortController] = useState(null);
-  const [copied, setCopied] = useState(false);
-  const timerRef = React.useRef(null);
 
   const loadReports = async () => {
     setLoading(true);
@@ -52,44 +47,6 @@ const TestingCoverage = () => {
     });
   };
 
-  const formatElapsedTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    if (mins > 0) {
-      return `${mins}m ${secs}s`;
-    }
-    return `${secs}s`;
-  };
-
-  const handleCancelRegeneration = () => {
-    if (abortController) {
-      abortController.abort();
-      setAbortController(null);
-    }
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-    setRegenerating(null);
-    setElapsedTime(0);
-    toast.warning('Report generation cancelled');
-  };
-
-  const handleCopyCommand = () => {
-    const projectRoot = '/Users/sbecker11/workspace-react/spexture-com';
-    const command = activeTab === 'client'
-      ? `cd ${projectRoot} && npm run test:coverage`
-      : `cd ${projectRoot}/server && npm run test:coverage`;
-
-    navigator.clipboard.writeText(command).then(() => {
-      setCopied(true);
-      toast.success('Command copied to clipboard!');
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(err => {
-      console.error('Failed to copy:', err);
-      toast.error('Failed to copy command');
-    });
-  };
 
   const handleRunCoverage = async () => {
     try {
@@ -117,78 +74,6 @@ const TestingCoverage = () => {
     loadReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
-
-  const handleRegenerateReport = async (type) => {
-    const reportType = type === 'client' ? 'Client' : 'Server';
-
-    // Set up regeneration state
-    setRegenerating(type);
-    setElapsedTime(0);
-
-    // Create abort controller for cancellation
-    const controller = new AbortController();
-    setAbortController(controller);
-
-    // Start timer
-    timerRef.current = setInterval(() => {
-      setElapsedTime(prev => prev + 1);
-    }, 1000);
-
-    toast.info(`Generating ${reportType} coverage report...`);
-
-    try {
-      const response = await fetch(`${API_URL}/coverage/regenerate/${type}`, {
-        method: 'POST',
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to regenerate ${reportType} report`);
-      }
-
-      // Clean up timer
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-
-      setRegenerating(null);
-      setElapsedTime(0);
-      setAbortController(null);
-
-      toast.success(`${reportType} coverage report generated! Refreshing...`);
-      // Wait a moment for the file to be written, then reload
-      setTimeout(() => {
-        loadReports();
-      }, 1000);
-    } catch (error) {
-      // Clean up timer
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-
-      setRegenerating(null);
-      setElapsedTime(0);
-      setAbortController(null);
-
-      if (error.name === 'AbortError') {
-        console.log('Report generation was cancelled');
-      } else {
-        console.error(`Error regenerating ${reportType} report:`, error);
-        toast.error(`Failed to regenerate ${reportType} report. This feature requires backend implementation.`);
-      }
-    }
-  };
 
   // Redirect non-admins (after all hooks)
   if (!isAdmin()) {

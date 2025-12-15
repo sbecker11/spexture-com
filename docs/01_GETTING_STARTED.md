@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed and running:
   - Verify Docker is running: `docker info`
   - Verify versions: `docker --version` and `docker compose --version`
 - **Git** - For cloning the repository
-- **Ports Available**: Ensure ports 3000 (client), 3001 (server), and 5433 (database) are not in use (5432 reserved for react-super-app)
+- **Ports Available**: Ensure ports 3010 (client), 3011 (server), and 5433 (database) are not in use (3000/3001/5432 reserved for react-super-app)
 
 **Quick Port Check:**
 ```bash
@@ -55,18 +55,18 @@ cp .env.example .env
 
 **Important:** The `.env.example` file contains all default configuration:
 - Database configuration (PostgreSQL user, password, database name, port)
-- Server configuration (port, NODE_ENV, JWT secret and expiration)
+- Server configuration (port, SPEXTURE_NODE_ENV, SPEXTURE_JWT_SECRET and expiration)
 - Client configuration (port, API URL, environment)
 
-**⚠️ Security Note**: Change `JWT_SECRET` in production! Generate a strong secret with:
+**⚠️ Security Note**: Change `SPEXTURE_JWT_SECRET` in production! Generate a strong secret with:
 ```bash
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
 **Optional Customization**: Edit `.env` to change:
-- **`NODE_ENV`**: `development`, `production`, or `test`
-- **`REACT_APP_ENV`**: Should match `NODE_ENV`
-- **Port numbers**: If defaults (3000, 3001, 5433) conflict with other services (5432 reserved for react-super-app)
+- **`SPEXTURE_NODE_ENV`**: `development`, `production`, or `test`
+- **`SPEXTURE_APP_ENV`**: Should match `SPEXTURE_NODE_ENV`
+- **Port numbers**: If defaults (3010, 3011, 5433) conflict with other services (3000/3001/5432 reserved for react-super-app)
 
 **Note**: The `.env` file is in `.gitignore` and won't be committed to Git.
 
@@ -368,7 +368,7 @@ claude
 ### Notes
 - Database still runs in Docker (via `npm run db:init`)
 - Environment variables from `.env` are still used
-- API URL should be configured in `.env` as `REACT_APP_API_URL=http://localhost:3001/api`
+- API URL should be configured in `.env` as `SPEXTURE_APP_API_URL=http://localhost:3011/api`
 - Only database needs Docker; server and client run natively for better performance
 
 ---
@@ -582,16 +582,16 @@ docker network ls | grep spexture_com | awk '{print $1}' | xargs docker network 
 
 1. **Change ports in `.env` file:**
    ```env
-   CLIENT_PORT=3002
-   SERVER_PORT=3003
-   POSTGRES_PORT=5433
+   SPEXTURE_CLIENT_PORT=3002
+   SPEXTURE_SERVER_PORT=3003
+   SPEXTURE_POSTGRES_PORT=5433
    ```
 
 2. **Find and stop the process using the port:**
    ```bash
    # Find process
-   lsof -i :3000  # React client
-   lsof -i :3001  # API server
+   lsof -i :3010  # React client (3000 reserved for react-super-app)
+   lsof -i :3011  # API server (3001 reserved for react-super-app)
    lsof -i :5432  # PostgreSQL
 
    # Kill process (replace PID with actual process ID)
@@ -708,7 +708,7 @@ docker compose restart client
 1. Server container is running: `docker compose ps server`
 2. Server logs show no errors: `docker compose logs server`
 3. API URL is correct: `http://localhost:3001/api`
-4. Check `.env` file has correct `REACT_APP_API_URL`
+4. Check `.env` file has correct `SPEXTURE_APP_API_URL`
 
 ### "Cannot connect to database"
 
@@ -852,7 +852,7 @@ Once everything is running:
 
 **⚠️ Important for Production:**
 
-1. **Change JWT_SECRET** - Use a strong, random secret:
+1. **Change SPEXTURE_JWT_SECRET** - Use a strong, random secret:
    ```bash
    # Generate a secure secret
    openssl rand -base64 32

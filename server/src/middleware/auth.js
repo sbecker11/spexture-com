@@ -17,7 +17,7 @@ const authenticate = async (req, res, next) => {
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
     
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET);
     
     // Get user from database
     const result = await query(

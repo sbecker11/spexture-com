@@ -13,7 +13,7 @@ describe('DevTools Component', () => {
   beforeEach(() => {
     // Set up default environment variables
     process.env.NODE_ENV = 'test';
-    process.env.REACT_APP_API_URL = 'http://localhost:3001/api';
+    process.env.REACT_APP_API_URL = process.env.SPEXTURE_APP_API_URL || 'http://localhost:3011/api';
   });
 
   it('renders without crashing', () => {
@@ -63,19 +63,23 @@ describe('DevTools Component', () => {
 
   it('displays the API Base URL from environment variable', () => {
     render(<DevTools />);
-    expect(screen.getByText(/http:\/\/localhost:3001\/api/i)).toBeInTheDocument();
+    const expectedApiUrl = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
+    expect(screen.getByText(new RegExp(expectedApiUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'))).toBeInTheDocument();
   });
 
   it('displays default API URL when env variable is not set', () => {
-    // Temporarily clear the env variable
+    // Temporarily clear the env variables
     const originalApiUrl = process.env.REACT_APP_API_URL;
+    const originalSpextureApiUrl = process.env.SPEXTURE_APP_API_URL;
     delete process.env.REACT_APP_API_URL;
+    delete process.env.SPEXTURE_APP_API_URL;
 
     render(<DevTools />);
-    expect(screen.getByText(/http:\/\/localhost:5000/i)).toBeInTheDocument();
+    expect(screen.getByText(/http:\/\/localhost:3011\/api/i)).toBeInTheDocument();
 
-    // Restore the env variable
-    process.env.REACT_APP_API_URL = originalApiUrl;
+    // Restore the env variables
+    if (originalApiUrl) process.env.REACT_APP_API_URL = originalApiUrl;
+    if (originalSpextureApiUrl) process.env.SPEXTURE_APP_API_URL = originalSpextureApiUrl;
   });
 
   it('renders Test Commands section', () => {

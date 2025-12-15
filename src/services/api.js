@@ -3,7 +3,7 @@
  * Provides methods for making API requests with enhanced error handling
  */
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api';
 
 /**
  * Custom API Error class for better error handling
@@ -294,11 +294,13 @@ export const jobDescriptionsAPI = {
   },
 };
 
-export default {
+const api = {
   authAPI,
   usersAPI,
   healthAPI,
   jobDescriptionsAPI,
   APIError,
 };
+
+export default api;
 

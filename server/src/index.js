@@ -3,12 +3,17 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+const path = require('path');
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from project root (.env file)
+// Try project root first, then fall back to server directory
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') }); // Fallback to server/.env if exists
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+// PORT is set by docker-compose from SPEXTURE_SERVER_PORT
+// For direct runs, use SPEXTURE_SERVER_PORT
+const PORT = process.env.PORT || process.env.SPEXTURE_SERVER_PORT || 3011;
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -19,7 +24,7 @@ const coverageRoutes = require('./routes/coverage');
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: process.env.CLIENT_URL || process.env.SPEXTURE_CLIENT_URL || `http://localhost:${process.env.SPEXTURE_CLIENT_PORT || 3010}`,
   credentials: true
 }));
 app.use(morgan('combined')); // Logging
@@ -47,15 +52,15 @@ app.use((err, req, res, next) => {
   console.error('Error:', err);
   res.status(err.status || 500).json({
     error: err.message || 'Internal server error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    ...((process.env.NODE_ENV || process.env.SPEXTURE_NODE_ENV) === 'development' && { stack: err.stack })
   });
 });
 
 // Start server only if not in test environment
-if (process.env.NODE_ENV !== 'test') {
+if ((process.env.NODE_ENV || process.env.SPEXTURE_NODE_ENV) !== 'test') {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📡 Environment: ${process.env.NODE_ENV || process.env.SPEXTURE_NODE_ENV || 'development'}`);
   });
 }
 

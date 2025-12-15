@@ -23,9 +23,9 @@ fi
 source "$SCRIPT_DIR/check-port.sh"
 
 # Port configuration with defaults
-CLIENT_PORT=${CLIENT_PORT:-3000}
-SERVER_PORT=${SERVER_PORT:-3001}
-POSTGRES_PORT=${POSTGRES_PORT:-5433}
+CLIENT_PORT=${SPEXTURE_CLIENT_PORT:-3010}
+SERVER_PORT=${SPEXTURE_SERVER_PORT:-3011}
+POSTGRES_PORT=${SPEXTURE_POSTGRES_PORT:-5433}
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Port Availability Check${NC}"

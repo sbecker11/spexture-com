@@ -99,8 +99,8 @@ const LoginRegister = () => {
         if (isLoginMode) {
           setProfileData({
             name: '',
-            email: process.env.REACT_APP_ADMIN_EMAIL || 'admin@spexture-com.local',
-            password: process.env.REACT_APP_ADMIN_PASSWORD || 'Admin123!',
+            email: process.env.SPEXTURE_APP_ADMIN_EMAIL || process.env.REACT_APP_ADMIN_EMAIL || 'admin@spexture-com.local',
+            password: process.env.SPEXTURE_APP_ADMIN_PASSWORD || process.env.REACT_APP_ADMIN_PASSWORD || 'Admin123!',
           });
           toast.info('Admin credentials auto-filled');
         }

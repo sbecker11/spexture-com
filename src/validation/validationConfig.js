@@ -39,7 +39,7 @@ export const validationConfig = {
     requireLowercase: true,
     requireNumber: true,
     requireSpecialChar: true,
-    specialChars: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+    specialChars: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/,
     messages: {
       required: 'Password is required',
       rules: {

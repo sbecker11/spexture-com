@@ -24,6 +24,16 @@ echo -e "${GREEN}Setting up 4-terminal development environment...${NC}"
 # Get project root directory
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+# Load environment variables from .env file if it exists
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    export $(grep -v '^#' "$PROJECT_ROOT/.env" | xargs)
+fi
+
+# Set defaults for ports
+SERVER_PORT=${SPEXTURE_SERVER_PORT:-3011}
+CLIENT_PORT=${SPEXTURE_CLIENT_PORT:-3010}
+API_URL=${SPEXTURE_APP_API_URL:-http://localhost:3011/api}
+
 # Profile names (user can customize these in iTerm2)
 DB_PROFILE="Database"
 SERVER_PROFILE="Server"
@@ -65,7 +75,7 @@ tell application "iTerm"
             write text "echo 'Waiting for database to be ready...'"
             write text "sleep 5"
             write text "echo 'Starting Express server with hot reload...'"
-            write text "npm run dev"
+            write text "PORT=$SERVER_PORT npm run dev"
         end tell
 
         tell current session
@@ -82,7 +92,7 @@ tell application "iTerm"
             write text "echo 'Waiting for server to be ready...'"
             write text "sleep 8"
             write text "echo 'Starting React dev server...'"
-            write text "npm start"
+            write text "PORT=$CLIENT_PORT SPEXTURE_APP_API_URL=$API_URL npm start"
 
             -- Split right: Claude
             set claudePane to (split horizontally with profile "$CLAUDE_PROFILE")
@@ -121,6 +131,6 @@ echo -e "${GREEN}All terminals are starting up...${NC}"
 echo -e "${GREEN}Give it 10-15 seconds for everything to be ready.${NC}"
 echo ""
 echo -e "${CYAN}Access URLs:${NC}"
-echo -e "  • React Client: ${BLUE}http://localhost:3000${NC}"
-echo -e "  • Express API:  ${GREEN}http://localhost:3001${NC}"
-echo -e "  • Database:     ${CYAN}localhost:5432${NC}"
+echo -e "  • React Client: ${BLUE}http://localhost:3010${NC}"
+echo -e "  • Express API:  ${GREEN}http://localhost:3011${NC}"
+echo -e "  • Database:     ${CYAN}localhost:5433${NC}"

@@ -15,7 +15,7 @@ npm run test:e2e
 - ✅ Runs migrations
 - ✅ Starts backend server
 - ✅ Starts frontend client
-- ✅ Opens browser at http://localhost:3000
+- ✅ Opens browser at http://localhost:3010
 - ✅ Displays admin credentials
 - ✅ Shows complete testing checklist
 
@@ -89,7 +89,7 @@ npm run start:services
 # Quick start (if services were stopped)
 npm run start:services:detached
 
-# Access application at http://localhost:3000
+# Access application at http://localhost:3010
 ```
 
 ### Manual Testing Checklist
@@ -109,8 +109,8 @@ npm run start:services:detached
 npm run check-ports
 
 # Kill processes on specific ports (if needed)
-lsof -ti:3000 | xargs kill -9  # Client port
-lsof -ti:3001 | xargs kill -9  # Server port
+lsof -ti:3010 | xargs kill -9  # Client port (3000 reserved for react-super-app)
+lsof -ti:3011 | xargs kill -9  # Server port (3001 reserved for react-super-app)
 lsof -ti:5433 | xargs kill -9  # Database port (5432 reserved for react-super-app)
 ```
 

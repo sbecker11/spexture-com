@@ -84,7 +84,7 @@ const UserManagement = () => {
       
       // Check if this is a network error or API error
       if (errorMessage.includes('Network') || errorMessage.includes('fetch') || errorMessage.includes('Failed to fetch')) {
-        toast.error('Cannot connect to server. Please check if the server is running on port 3001.');
+        toast.error('Cannot connect to server. Please check if the server is running on port 3011.');
       } else {
         toast.error(`Failed to list users: ${errorMessage}`);
       }

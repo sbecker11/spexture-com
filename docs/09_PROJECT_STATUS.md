@@ -556,8 +556,8 @@ All three high-priority authentication items identified in NEXT_STEPS.md are **f
 - **DevOps**: Docker Compose, npm scripts
 
 ### Ports
-- **React Client**: http://localhost:3000
-- **Express API**: http://localhost:3001
+- **React Client**: http://localhost:3010
+- **Express API**: http://localhost:3011
 - **PostgreSQL**: localhost:5432
 
 ---

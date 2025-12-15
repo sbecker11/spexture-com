@@ -65,9 +65,9 @@ The Spexture-com uses PostgreSQL as its primary database for tracking job search
 
 - **Image**: `postgres:15-alpine` (PostgreSQL 15 on Alpine Linux)
 - **Port**: `5433` (configurable via `POSTGRES_PORT`, 5432 reserved for react-super-app)
-- **Database Name**: `spexture_com` (configurable via `POSTGRES_DB`)
-- **Username**: `spexture_user` (configurable via `POSTGRES_USER`)
-- **Password**: `spexture_password` (configurable via `POSTGRES_PASSWORD`)
+- **Database Name**: `spexture_com` (configurable via `SPEXTURE_POSTGRES_DB`)
+- **Username**: `spexture_user` (configurable via `SPEXTURE_POSTGRES_USER`)
+- **Password**: `spexture_password` (configurable via `SPEXTURE_POSTGRES_PASSWORD`)
 - **Data Persistence**: Docker volume `postgres_data`
 
 ### Environment Variables
@@ -75,10 +75,10 @@ The Spexture-com uses PostgreSQL as its primary database for tracking job search
 Set these in `.env` file (project root):
 
 ```env
-POSTGRES_USER=spexture_user
-POSTGRES_PASSWORD=spexture_password
-POSTGRES_DB=spexture_com
-POSTGRES_PORT=5433
+SPEXTURE_POSTGRES_USER=spexture_user
+SPEXTURE_POSTGRES_PASSWORD=spexture_password
+SPEXTURE_POSTGRES_DB=spexture_com
+SPEXTURE_POSTGRES_PORT=5433
 ```
 
 **⚠️ Security Note**: Change default passwords in production!
@@ -92,18 +92,18 @@ postgres:
   image: postgres:15-alpine
   container_name: spexture_com_postgres
   environment:
-    POSTGRES_USER: ${POSTGRES_USER:-spexture_user}
-    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
-    POSTGRES_DB: ${POSTGRES_DB:-spexture_com}
+    POSTGRES_USER: ${SPEXTURE_POSTGRES_USER:-spexture_user}
+    POSTGRES_PASSWORD: ${SPEXTURE_POSTGRES_PASSWORD:-spexture_password}
+    POSTGRES_DB: ${SPEXTURE_POSTGRES_DB:-spexture_com}
   ports:
-    - "${POSTGRES_PORT:-5433}:5432"
+    - "${SPEXTURE_POSTGRES_PORT:-5433}:5432"
   volumes:
     - postgres_data:/var/lib/postgresql/data
     - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
   networks:
     - spexture_com_network
   healthcheck:
-    test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spexture_user}"]
+      test: ["CMD-SHELL", "pg_isready -U ${SPEXTURE_POSTGRES_USER:-spexture_user}"]
     interval: 10s
     timeout: 5s
     retries: 5
@@ -712,8 +712,8 @@ SELECT status, COUNT(*) FROM job_descriptions GROUP BY status;
 
 ### Production Security Checklist
 
-- [ ] Change `POSTGRES_PASSWORD` to strong password
-- [ ] Change JWT_SECRET to secure random string
+- [ ] Change `SPEXTURE_POSTGRES_PASSWORD` to strong password
+- [ ] Change `SPEXTURE_JWT_SECRET` to secure random string
 - [ ] Enable SSL/TLS for database connections
 - [ ] Restrict database access to application only
 - [ ] Set up database backups

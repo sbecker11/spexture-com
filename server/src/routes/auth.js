@@ -53,8 +53,8 @@ router.post('/register', getRegisterValidators(), async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+      process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET,
+      { expiresIn: (process.env.JWT_EXPIRES_IN || process.env.SPEXTURE_JWT_EXPIRES_IN || '24h') }
     );
     
     res.status(201).json({
@@ -136,8 +136,8 @@ router.post('/login', [
     // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+      process.env.JWT_SECRET || process.env.SPEXTURE_JWT_SECRET,
+      { expiresIn: (process.env.JWT_EXPIRES_IN || process.env.SPEXTURE_JWT_EXPIRES_IN || '24h') }
     );
     
     res.json({

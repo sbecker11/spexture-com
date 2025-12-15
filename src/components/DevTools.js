@@ -20,7 +20,7 @@ function DevTools() {
       <ul>
         <li><strong>Node Environment:</strong> {process.env.NODE_ENV}</li>
         <li><strong>React Version:</strong> {React.version}</li>
-        <li><strong>API Base URL:</strong> {process.env.REACT_APP_API_URL || 'http://localhost:5000'}</li>
+        <li><strong>API Base URL:</strong> {process.env.SPEXTURE_APP_API_URL || process.env.REACT_APP_API_URL || 'http://localhost:3011/api'}</li>
       </ul>
 
       <h2>Test Commands</h2>

@@ -99,9 +99,9 @@ npm run start:services:detached
 ```
 
 **Step 5: Access the application**
-- **Client**: [http://localhost:3000](http://localhost:3000)
-- **API**: [http://localhost:3001](http://localhost:3001)
-- **API Health**: [http://localhost:3001/api/health](http://localhost:3001/api/health)
+- **Client**: [http://localhost:3010](http://localhost:3010)
+- **API**: [http://localhost:3011](http://localhost:3011)
+- **API Health**: [http://localhost:3011/api/health](http://localhost:3011/api/health)
 
 **🎉 That's it!** The application is now running with all services.
 
@@ -133,47 +133,53 @@ The application uses environment variables for configuration. Copy `.env.example
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `POSTGRES_USER` | `spexture_user` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | `spexture_password` | PostgreSQL password |
-| `POSTGRES_DB` | `spexture_com` | Database name |
-| `POSTGRES_PORT` | `5433` | PostgreSQL port (5432 reserved for react-super-app) |
+| `SPEXTURE_POSTGRES_USER` | `spexture_user` | PostgreSQL username |
+| `SPEXTURE_POSTGRES_PASSWORD` | `spexture_password` | PostgreSQL password |
+| `SPEXTURE_POSTGRES_DB` | `spexture_com` | Database name |
+| `SPEXTURE_POSTGRES_PORT` | `5433` | PostgreSQL port (5432 reserved for react-super-app) |
 
 ### Server Configuration
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SERVER_PORT` | `3001` | Express server port |
-| `NODE_ENV` | `development` | Node environment (`development`, `production`, `test`) |
-| `JWT_SECRET` | `your-super-secret-jwt-key-change-in-production` | **⚠️ CHANGE IN PRODUCTION!** JWT signing key |
-| `JWT_EXPIRES_IN` | `24h` | JWT token expiration time |
+| `SPEXTURE_SERVER_PORT` | `3011` | Express server port (3001 reserved for react-super-app) |
+| `SPEXTURE_NODE_ENV` | `development` | Node environment (`development`, `production`, `test`) |
+| `SPEXTURE_JWT_SECRET` | `your-super-secret-jwt-key-change-in-production` | **⚠️ CHANGE IN PRODUCTION!** JWT signing key |
+| `SPEXTURE_JWT_EXPIRES_IN` | `24h` | JWT token expiration time |
 
 ### Client Configuration
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CLIENT_PORT` | `3000` | React app port |
-| `REACT_APP_API_URL` | `http://localhost:3001/api` | Backend API URL |
-| `REACT_APP_ENV` | `development` | Client environment |
+| `SPEXTURE_CLIENT_PORT` | `3010` | React app port (3000 reserved for react-super-app) |
+| `SPEXTURE_APP_API_URL` | `http://localhost:3011/api` | Backend API URL |
+| `SPEXTURE_APP_ENV` | `development` | Client environment |
+| `SPEXTURE_APP_ADMIN_EMAIL` | `admin@spexture-com.local` | Admin email (for dev auto-fill) |
+| `SPEXTURE_APP_ADMIN_PASSWORD` | `Admin123!` | Admin password (for dev auto-fill) |
+
+**Note**: All environment variables use the `SPEXTURE_` prefix to ensure complete isolation from other projects like `react-super-app`. This prevents conflicts when both projects are running simultaneously.
 
 ### Example `.env` File
 
 ```bash
 # Database
-POSTGRES_USER=spexture_user
-POSTGRES_PASSWORD=spexture_password
-POSTGRES_DB=spexture_com
-POSTGRES_PORT=5433
+SPEXTURE_POSTGRES_USER=spexture_user
+SPEXTURE_POSTGRES_PASSWORD=spexture_password
+SPEXTURE_POSTGRES_DB=spexture_com
+SPEXTURE_POSTGRES_PORT=5433
 
 # Server
-SERVER_PORT=3001
-NODE_ENV=development
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-JWT_EXPIRES_IN=24h
+SPEXTURE_SERVER_PORT=3011
+SPEXTURE_NODE_ENV=development
+SPEXTURE_JWT_SECRET=your-super-secret-jwt-key-change-in-production
+SPEXTURE_JWT_EXPIRES_IN=24h
 
 # Client
-CLIENT_PORT=3000
-REACT_APP_API_URL=http://localhost:3001/api
-REACT_APP_ENV=development
+SPEXTURE_CLIENT_PORT=3010
+SPEXTURE_APP_API_URL=http://localhost:3011/api
+SPEXTURE_APP_ENV=development
+SPEXTURE_APP_ADMIN_EMAIL=admin@spexture-com.local
+SPEXTURE_APP_ADMIN_PASSWORD=Admin123!
 ```
 
 **🔒 Security Note**: Never commit your `.env` file to version control. The `.env.example` file is provided as a template.

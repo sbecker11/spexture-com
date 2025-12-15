@@ -14,6 +14,16 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# Load environment variables from .env file if it exists
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    export $(grep -v '^#' "$PROJECT_ROOT/.env" | xargs)
+fi
+
+# Set defaults
+POSTGRES_USER=${SPEXTURE_POSTGRES_USER:-spexture_user}
+POSTGRES_DB=${SPEXTURE_POSTGRES_DB:-spexture_com}
+SERVER_PORT=${SPEXTURE_SERVER_PORT:-3011}
+
 echo -e "${YELLOW}Checking Docker services...${NC}"
 
 # Check if PostgreSQL is running
@@ -27,7 +37,7 @@ if ! docker compose ps postgres | grep -q "Up"; then
     # Wait for database to be ready
     MAX_ATTEMPTS=30
     ATTEMPT=0
-    while ! docker compose exec -T postgres pg_isready -U spexture_user -d spexture_com > /dev/null 2>&1; do
+    while ! docker compose exec -T postgres pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB" > /dev/null 2>&1; do
         ATTEMPT=$((ATTEMPT + 1))
         if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
             echo -e "${RED}❌ PostgreSQL failed to start${NC}"
@@ -41,26 +51,26 @@ else
 fi
 
 # Check if server is running
-if ! curl -s http://localhost:3001/health > /dev/null 2>&1; then
+if ! curl -s http://localhost:${SERVER_PORT}/health > /dev/null 2>&1; then
     echo -e "${YELLOW}Server not running. Starting...${NC}"
     cd "$PROJECT_ROOT/server"
     
-    # Check if server is already running on port 3001
-    if lsof -Pi :3001 -sTCP:LISTEN -t >/dev/null 2>&1; then
-        echo -e "${YELLOW}Port 3001 is in use. Killing existing process...${NC}"
-        kill -9 $(lsof -t -i:3001) 2>/dev/null || true
+    # Check if server is already running on port
+    if lsof -Pi :${SERVER_PORT} -sTCP:LISTEN -t >/dev/null 2>&1; then
+        echo -e "${YELLOW}Port ${SERVER_PORT} is in use. Killing existing process...${NC}"
+        kill -9 $(lsof -t -i:${SERVER_PORT}) 2>/dev/null || true
         sleep 2
     fi
     
     # Start server in background
-    npm run dev > /dev/null 2>&1 &
+    PORT=${SERVER_PORT} npm run dev > /dev/null 2>&1 &
     SERVER_PID=$!
     echo $SERVER_PID > "$PROJECT_ROOT/.server.pid"
     
     # Wait for server to be ready
     MAX_ATTEMPTS=20
     ATTEMPT=0
-    while ! curl -s http://localhost:3001/health > /dev/null 2>&1; do
+    while ! curl -s http://localhost:${SERVER_PORT}/health > /dev/null 2>&1; do
         ATTEMPT=$((ATTEMPT + 1))
         if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
             echo -e "${RED}❌ Server failed to start${NC}"
