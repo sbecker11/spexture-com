@@ -1,4 +1,4 @@
-# CLAUDE.md - React Super App Project Context
+# CLAUDE.md - Spexture-com Project Context
 
 > **Last Updated**: 2025-12-06
 > **Project Status**: ~31% Complete (Backend ready, Client integration in progress)
@@ -8,7 +8,7 @@
 
 ## 📋 Project Overview
 
-**React Super App** is a full-stack job search tracking application built to help users manage their job search process, from saving job descriptions to tracking applications, interviews, and responses.
+**Spexture-com** is a full-stack job search tracking application built to help users manage their job search process, from saving job descriptions to tracking applications, interviews, and responses.
 
 ### Core Purpose
 - **Job Description Management**: Save, analyze, and track job descriptions from multiple sources
@@ -32,7 +32,7 @@ Testing:   Jest + React Testing Library + Supertest
 
 ### Project Structure
 ```
-react-super-app/
+spexture-com/
 ├── src/                          # React client application
 │   ├── components/               # UI components
 │   │   ├── Header.js            # Navigation header (uses AuthContext, ThemeContext)
@@ -122,7 +122,7 @@ react-super-app/
 id, name, email, password_hash, role ('admin'|'user'),
 is_active, last_login_at, created_by, updated_by, created_at, updated_at
 ```
-- **Default Admin**: `admin@react-super-app.local` / `Admin123!`
+- **Default Admin**: `admin@spexture-com.local` / `Admin123!`
 - **Self-registration**: Creates 'user' role by default
 
 #### 2. **user_auth_logs** - Security audit trail
@@ -280,8 +280,8 @@ npm run test:all                  # Run client + server tests
 ### First-Time Setup
 ```bash
 # 1. Clone repo
-git clone https://github.com/sbecker11/react-super-app.git
-cd react-super-app
+git clone https://github.com/sbecker11/spexture-com.git
+cd spexture-com
 
 # 2. Configure environment
 cp .env.example .env
@@ -420,7 +420,7 @@ docker-compose down -v           # Reset everything (deletes data!)
 ### Production Checklist
 - [ ] Change `JWT_SECRET` to strong random value (use `openssl rand -base64 32`)
 - [ ] Change default admin password immediately after first login
-- [ ] Use strong database passwords (not `superapp_password`)
+- [ ] Use strong database passwords (not `spexture_password`)
 - [ ] Enable HTTPS/SSL for all connections
 - [ ] Never commit `.env` file to version control (already in `.gitignore`)
 - [ ] Restrict database access to application only
@@ -460,7 +460,7 @@ All authentication high-priority items are complete:
 ### 2. Verify Current Test Status (1-2 hours) 🔴
 ```bash
 # Run tests to check current status
-cd /Users/sbecker11/workspace-react/react-super-app
+cd /Users/sbecker11/workspace-react/spexture-com
 npm test -- --no-watch --verbose
 
 # Review results and fix any actual failures
@@ -479,7 +479,7 @@ docker-compose up --build
 # - Try accessing /analyzer (should work when logged in)
 # - Logout
 # - Try /analyzer again (should redirect to login)
-# - Test admin credentials: admin@react-super-app.local / Admin123!
+# - Test admin credentials: admin@spexture-com.local / Admin123!
 ```
 
 ### 4. Add Toast Notifications - ALREADY DONE ✅

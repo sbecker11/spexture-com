@@ -99,7 +99,7 @@ const LoginRegister = () => {
         if (isLoginMode) {
           setProfileData({
             name: '',
-            email: process.env.REACT_APP_ADMIN_EMAIL || 'admin@react-super-app.local',
+            email: process.env.REACT_APP_ADMIN_EMAIL || 'admin@spexture-com.local',
             password: process.env.REACT_APP_ADMIN_PASSWORD || 'Admin123!',
           });
           toast.info('Admin credentials auto-filled');

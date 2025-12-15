@@ -25,7 +25,7 @@ source "$SCRIPT_DIR/check-port.sh"
 # Port configuration with defaults
 CLIENT_PORT=${CLIENT_PORT:-3000}
 SERVER_PORT=${SERVER_PORT:-3001}
-POSTGRES_PORT=${POSTGRES_PORT:-5432}
+POSTGRES_PORT=${POSTGRES_PORT:-5433}
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Port Availability Check${NC}"

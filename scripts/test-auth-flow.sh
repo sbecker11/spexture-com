@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🧪 Testing React Super App Authentication Flow"
+echo "🧪 Testing Spexture-com Authentication Flow"
 echo "=============================================="
 echo ""
 
@@ -72,7 +72,7 @@ echo "Test 4: Admin Login"
 echo "-------------------"
 ADMIN_LOGIN=$(curl -s -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@react-super-app.local","password":"Admin123!"}')
+  -d '{"email":"admin@spexture-com.local","password":"Admin123!"}')
 
 if echo "$ADMIN_LOGIN" | grep -q "token"; then
   echo -e "${GREEN}✅ Admin login successful${NC}"

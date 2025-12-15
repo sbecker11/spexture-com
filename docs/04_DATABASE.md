@@ -1,6 +1,6 @@
 # 🗄️ Database Guide
 
-Complete guide to the PostgreSQL database schema, setup, and management for the React Super App.
+Complete guide to the PostgreSQL database schema, setup, and management for the Spexture-com.
 
 ---
 
@@ -19,7 +19,7 @@ Complete guide to the PostgreSQL database schema, setup, and management for the 
 
 ## 📊 Overview
 
-The React Super App uses PostgreSQL as its primary database for tracking job searches, applications, and user data.
+The Spexture-com uses PostgreSQL as its primary database for tracking job searches, applications, and user data.
 
 ### Architecture
 
@@ -41,7 +41,7 @@ The React Super App uses PostgreSQL as its primary database for tracking job sea
                         │ PostgreSQL Connection Pool
                         ▼
 ┌─────────────────────────────────────────────────────────┐
-│          PostgreSQL Database (Port 5432)                 │
+│          PostgreSQL Database (Port 5433)                 │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │  8 Tables: users, auth logs, companies,        │    │
 │  │  recruiters, resumes, cover letters, JDs, etc.  │    │
@@ -64,10 +64,10 @@ The React Super App uses PostgreSQL as its primary database for tracking job sea
 ### Default Configuration
 
 - **Image**: `postgres:15-alpine` (PostgreSQL 15 on Alpine Linux)
-- **Port**: `5432` (configurable via `POSTGRES_PORT`)
-- **Database Name**: `react_super_app` (configurable via `POSTGRES_DB`)
-- **Username**: `superapp_user` (configurable via `POSTGRES_USER`)
-- **Password**: `superapp_password` (configurable via `POSTGRES_PASSWORD`)
+- **Port**: `5433` (configurable via `POSTGRES_PORT`, 5432 reserved for react-super-app)
+- **Database Name**: `spexture_com` (configurable via `POSTGRES_DB`)
+- **Username**: `spexture_user` (configurable via `POSTGRES_USER`)
+- **Password**: `spexture_password` (configurable via `POSTGRES_PASSWORD`)
 - **Data Persistence**: Docker volume `postgres_data`
 
 ### Environment Variables
@@ -75,10 +75,10 @@ The React Super App uses PostgreSQL as its primary database for tracking job sea
 Set these in `.env` file (project root):
 
 ```env
-POSTGRES_USER=superapp_user
-POSTGRES_PASSWORD=superapp_password
-POSTGRES_DB=react_super_app
-POSTGRES_PORT=5432
+POSTGRES_USER=spexture_user
+POSTGRES_PASSWORD=spexture_password
+POSTGRES_DB=spexture_com
+POSTGRES_PORT=5433
 ```
 
 **⚠️ Security Note**: Change default passwords in production!
@@ -90,20 +90,20 @@ The PostgreSQL database is configured in `docker-compose.yml`:
 ```yaml
 postgres:
   image: postgres:15-alpine
-  container_name: react_super_app_postgres
+  container_name: spexture_com_postgres
   environment:
-    POSTGRES_USER: ${POSTGRES_USER:-superapp_user}
-    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-superapp_password}
-    POSTGRES_DB: ${POSTGRES_DB:-react_super_app}
+    POSTGRES_USER: ${POSTGRES_USER:-spexture_user}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
+    POSTGRES_DB: ${POSTGRES_DB:-spexture_com}
   ports:
-    - "${POSTGRES_PORT:-5432}:5432"
+    - "${POSTGRES_PORT:-5433}:5432"
   volumes:
     - postgres_data:/var/lib/postgresql/data
     - ./server/database/init.sql:/docker-entrypoint-initdb.d/init.sql
   networks:
-    - react_super_app_network
+    - spexture_com_network
   healthcheck:
-    test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-superapp_user}"]
+    test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spexture_user}"]
     interval: 10s
     timeout: 5s
     retries: 5
@@ -166,7 +166,7 @@ CREATE INDEX idx_users_last_login_at ON users(last_login_at);
 
 **Key Features**:
 - Self-registration creates 'user' role by default
-- First admin created via seed script (`admin@react-super-app.local` / `Admin123!`)
+- First admin created via seed script (`admin@spexture-com.local` / `Admin123!`)
 - Audit trail (created_by, updated_by)
 - Soft delete via is_active flag
 - Tracks last login for activity monitoring
@@ -503,7 +503,7 @@ npm run db:admin
 docker compose up -d postgres
 
 # Check if database is ready
-docker exec react_super_app_postgres pg_isready -U superapp_user
+docker exec spexture_com_postgres pg_isready -U spexture_user
 
 # Run migrations
 npm run db:migrate:001
@@ -512,8 +512,8 @@ npm run db:migrate:001
 ### Database Initialization Process
 
 When the PostgreSQL container starts for the first time:
-1. Creates the database `react_super_app`
-2. Creates user `superapp_user` with password `superapp_password`
+1. Creates the database `spexture_com`
+2. Creates user `spexture_user` with password `spexture_password`
 3. Executes `server/database/init.sql` to create tables, indexes, and triggers
 4. Sets up UUID extension (`uuid-ossp`)
 5. Creates default admin user
@@ -528,11 +528,11 @@ This application uses **its own uniquely named PostgreSQL database** and is comp
 
 ### Isolation Configuration
 
-- ✅ **Separate database** - `react_super_app` (not `postgres` default)
-- ✅ **Dedicated user** - `superapp_user` (not `postgres` superuser)
-- ✅ **Dedicated volume** - `react_super_app_postgres_data`
-- ✅ **Dedicated network** - `react_super_app_network`
-- ✅ **Dedicated container** - `react_super_app_postgres`
+- ✅ **Separate database** - `spexture_com` (not `postgres` default)
+- ✅ **Dedicated user** - `spexture_user` (not `postgres` superuser)
+- ✅ **Dedicated volume** - `spexture_com_postgres_data`
+- ✅ **Dedicated network** - `spexture_com_network`
+- ✅ **Dedicated container** - `spexture_com_postgres`
 
 ### How Isolation Works
 
@@ -542,7 +542,7 @@ PostgreSQL supports multiple databases on a single server:
 
 ```sql
 -- This app's database
-react_super_app
+spexture_com
 
 -- Other databases remain untouched
 postgres          (PostgreSQL default)
@@ -553,24 +553,24 @@ your_other_db     (Your other applications)
 
 #### 2. User Permissions
 
-The `superapp_user` has permissions **ONLY** on `react_super_app`:
+The `spexture_user` has permissions **ONLY** on `spexture_com`:
 
 ```sql
--- User can access ONLY react_super_app
-GRANT ALL PRIVILEGES ON DATABASE react_super_app TO superapp_user;
+-- User can access ONLY spexture_com
+GRANT ALL PRIVILEGES ON DATABASE spexture_com TO spexture_user;
 
 -- User CANNOT access other databases
 ```
 
 #### 3. Connection Isolation
 
-Application connects **only** to `react_super_app`:
+Application connects **only** to `spexture_com`:
 
 ```javascript
 // server/src/database/connection.js
 const pool = new Pool({
-  database: 'react_super_app',  // ← Isolated database
-  user: 'superapp_user',         // ← Dedicated user
+  database: 'spexture_com',  // ← Isolated database
+  user: 'spexture_user',         // ← Dedicated user
   // ...
 });
 ```
@@ -585,14 +585,14 @@ npm run db:shell
 \l
 
 # You'll see:
-# react_super_app  | superapp_user | UTF8  | ← This app
+# spexture_com  | spexture_user | UTF8  | ← This app
 # postgres         | postgres      | UTF8  | ← Default (untouched)
 # template0        | postgres      | UTF8  | ← Template (untouched)
 # template1        | postgres      | UTF8  | ← Template (untouched)
 
 # Check current database
 SELECT current_database();
-# Output: react_super_app
+# Output: spexture_com
 
 # List tables in THIS database only
 \dt
@@ -604,7 +604,7 @@ You can run **multiple applications** on the same PostgreSQL server:
 
 ```
 PostgreSQL Server (localhost:5432)
-├── react_super_app         ← This app
+├── spexture_com         ← This app
 │   ├── users
 │   ├── job_descriptions
 │   └── ...
@@ -633,26 +633,26 @@ PostgreSQL Server (localhost:5432)
 npm run db:shell
 
 # OR directly via docker compose
-docker compose exec postgres psql -U superapp_user -d react_super_app
+docker compose exec postgres psql -U spexture_user -d spexture_com
 
 # Run SQL commands directly
-docker compose exec postgres psql -U superapp_user -d react_super_app -c "SELECT * FROM users;"
+docker compose exec postgres psql -U spexture_user -d spexture_com -c "SELECT * FROM users;"
 
 # List all tables
-docker compose exec postgres psql -U superapp_user -d react_super_app -c "\dt"
+docker compose exec postgres psql -U spexture_user -d spexture_com -c "\dt"
 
 # Describe table structure
-docker compose exec postgres psql -U superapp_user -d react_super_app -c "\d users"
+docker compose exec postgres psql -U spexture_user -d spexture_com -c "\d users"
 ```
 
 ### Using Database Client
 
 Connect using any PostgreSQL client:
 - **Host**: `localhost`
-- **Port**: `5432`
-- **Database**: `react_super_app`
-- **Username**: `superapp_user`
-- **Password**: `superapp_password`
+- **Port**: `5433` (5432 reserved for react-super-app)
+- **Database**: `spexture_com`
+- **Username**: `spexture_user`
+- **Password**: `spexture_password`
 
 **Popular clients**:
 - pgAdmin (GUI)
@@ -689,12 +689,12 @@ SELECT status, COUNT(*) FROM job_descriptions GROUP BY status;
 
 ### ✅ What This App Does Right
 
-1. **Dedicated Database** - Uses `react_super_app`, not `postgres` default
-2. **Dedicated User** - Uses `superapp_user`, not `postgres` superuser
+1. **Dedicated Database** - Uses `spexture_com`, not `postgres` default
+2. **Dedicated User** - Uses `spexture_user`, not `postgres` superuser
 3. **Limited Permissions** - User can only access its own database
 4. **Environment Variables** - Credentials configurable via `.env`
 5. **Connection Pooling** - Efficient connection management
-6. **No Shared Tables** - All tables isolated within `react_super_app`
+6. **No Shared Tables** - All tables isolated within `spexture_com`
 7. **Audit Logging** - All admin actions logged
 8. **Password Hashing** - bcrypt with 10 rounds
 9. **Soft Deletes** - Uses `is_active` flag instead of hard deletes
@@ -727,13 +727,13 @@ SELECT status, COUNT(*) FROM job_descriptions GROUP BY status;
 
 ```bash
 # Backup database
-docker compose exec postgres pg_dump -U superapp_user react_super_app > backup.sql
+docker compose exec postgres pg_dump -U spexture_user spexture_com > backup.sql
 
 # Backup with timestamp
-docker compose exec postgres pg_dump -U superapp_user react_super_app > backup_$(date +%Y%m%d_%H%M%S).sql
+docker compose exec postgres pg_dump -U spexture_user spexture_com > backup_$(date +%Y%m%d_%H%M%S).sql
 
 # Restore database
-docker compose exec -T postgres psql -U superapp_user react_super_app < backup.sql
+docker compose exec -T postgres psql -U spexture_user spexture_com < backup.sql
 ```
 
 ---
@@ -756,10 +756,10 @@ This removes the `postgres_data` volume and all data.
 npm run db:shell
 
 # Drop database
-DROP DATABASE react_super_app;
+DROP DATABASE spexture_com;
 
 # Recreate it
-CREATE DATABASE react_super_app OWNER superapp_user;
+CREATE DATABASE spexture_com OWNER spexture_user;
 
 # Run migrations
 \q
@@ -803,6 +803,6 @@ This application is completely isolated and will never touch:
 
 ---
 
-**Database Name**: `react_super_app`
+**Database Name**: `spexture_com`
 **Isolation Level**: Complete
 **Status**: ✅ Production Ready

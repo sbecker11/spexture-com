@@ -21,7 +21,7 @@ Complete guide to the Express.js REST API server, including authentication, RBAC
 
 ## 📊 Overview
 
-The React Super App server is an Express.js REST API that provides:
+The Spexture-com server is an Express.js REST API that provides:
 - User authentication (registration, login)
 - JWT-based session management
 - Role-based access control (RBAC)
@@ -97,10 +97,10 @@ PORT=3001
 
 # Database Configuration
 DB_HOST=postgres
-DB_PORT=5432
-DB_USER=superapp_user
-DB_PASSWORD=superapp_password
-DB_NAME=react_super_app
+DB_PORT=5432  # Internal container port (host port is 5433)
+DB_USER=spexture_user
+DB_PASSWORD=spexture_password
+DB_NAME=spexture_com
 
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
@@ -117,7 +117,7 @@ CLIENT_URL=http://localhost:3000
    ```bash
    node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
    ```
-2. **Use strong database password** (not `superapp_password`)
+2. **Use strong database password** (not `spexture_password`)
 3. **Set NODE_ENV=production**
 4. **Enable HTTPS** and update CLIENT_URL
 5. **Set up proper logging** (not just console.log)
@@ -706,7 +706,7 @@ These operations require admin to re-authenticate with password:
 
 ### Default Admin Account
 
-**Email**: `admin@react-super-app.local`
+**Email**: `admin@spexture-com.local`
 **Password**: `Admin123!`
 
 **⚠️ IMPORTANT**: Change this password immediately after first login!
@@ -948,7 +948,7 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:3001/api/users/me
 curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@react-super-app.local",
+    "email": "admin@spexture-com.local",
     "password": "Admin123!"
   }'
 ```

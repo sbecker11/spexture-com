@@ -1,4 +1,4 @@
--- Initialize database schema for React Super App
+-- Initialize database schema for Spexture-com
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

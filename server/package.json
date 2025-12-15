@@ -1,7 +1,7 @@
 {
-  "name": "react-super-app-server",
+  "name": "spexture-com-server",
   "version": "1.0.0",
-  "description": "REST API server for React Super App application",
+  "description": "REST API server for Spexture-com application",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

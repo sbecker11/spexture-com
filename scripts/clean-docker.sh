@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Clean Docker - Remove all React Super App Docker resources
+# Clean Docker - Remove all Spexture-com Docker resources
 # Use this for a completely fresh start
 
 set -e
@@ -17,7 +17,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║  React Super App - Docker Cleanup                         ║${NC}"
+echo -e "${BLUE}║  Spexture-com - Docker Cleanup                         ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${YELLOW}⚠️  WARNING: This will remove ALL Docker resources for this project${NC}"
@@ -40,7 +40,7 @@ echo ""
 
 # Step 2: Remove images
 echo -e "${CYAN}[2/5] Removing images...${NC}"
-IMAGES=$(docker images | grep -E "react-super-app|react_super_app" | awk '{print $3}' || true)
+IMAGES=$(docker images | grep -E "spexture-com|spexture_com" | awk '{print $3}' || true)
 if [ -n "$IMAGES" ]; then
     echo "$IMAGES" | xargs docker rmi -f 2>/dev/null || true
     echo -e "${GREEN}✅ Images removed${NC}"
@@ -51,7 +51,7 @@ echo ""
 
 # Step 3: Remove volumes
 echo -e "${CYAN}[3/5] Removing volumes...${NC}"
-VOLUMES=$(docker volume ls | grep -E "react-super-app|react_super_app" | awk '{print $2}' || true)
+VOLUMES=$(docker volume ls | grep -E "spexture-com|spexture_com" | awk '{print $2}' || true)
 if [ -n "$VOLUMES" ]; then
     echo "$VOLUMES" | xargs docker volume rm -f 2>/dev/null || true
     echo -e "${GREEN}✅ Volumes removed${NC}"
@@ -62,7 +62,7 @@ echo ""
 
 # Step 4: Remove networks
 echo -e "${CYAN}[4/5] Removing networks...${NC}"
-NETWORKS=$(docker network ls | grep -E "react-super-app|react_super_app" | awk '{print $2}' || true)
+NETWORKS=$(docker network ls | grep -E "spexture-com|spexture_com" | awk '{print $2}' || true)
 if [ -n "$NETWORKS" ]; then
     echo "$NETWORKS" | xargs docker network rm 2>/dev/null || true
     echo -e "${GREEN}✅ Networks removed${NC}"
@@ -81,7 +81,7 @@ echo -e "${BLUE}╔════════════════════�
 echo -e "${BLUE}║  Docker Cleanup Complete!                                 ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
-echo -e "${GREEN}All React Super App Docker resources have been removed.${NC}"
+echo -e "${GREEN}All Spexture-com Docker resources have been removed.${NC}"
 echo ""
 echo -e "${CYAN}To start fresh:${NC}"
 echo -e "   ${YELLOW}npm run test:e2e${NC}"

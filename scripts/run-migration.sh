@@ -19,13 +19,13 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 MIGRATIONS_DIR="$PROJECT_ROOT/server/database/migrations"
 
 # Database connection details
-DB_USER="${POSTGRES_USER:-superapp_user}"
-DB_PASSWORD="${POSTGRES_PASSWORD:-superapp_password}"
-DB_NAME="${POSTGRES_DB:-react_super_app}"
+DB_USER="${POSTGRES_USER:-spexture_user}"
+DB_PASSWORD="${POSTGRES_PASSWORD:-spexture_password}"
+DB_NAME="${POSTGRES_DB:-spexture_com}"
 DB_HOST="${POSTGRES_HOST:-localhost}"
 DB_PORT="${POSTGRES_PORT:-5432}"
 
-echo -e "${BLUE}=== React Super App - Database Migration Tool ===${NC}"
+echo -e "${BLUE}=== Spexture-com - Database Migration Tool ===${NC}"
 echo ""
 
 # Check if migration number provided
@@ -54,7 +54,7 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Check if database container is running
-if ! docker ps | grep -q react_super_app_postgres; then
+if ! docker ps | grep -q spexture_com_postgres; then
     echo -e "${YELLOW}⚠️  Database container not running${NC}"
     echo "Starting database container..."
     cd "$PROJECT_ROOT"
@@ -65,7 +65,7 @@ fi
 
 # Test database connection
 echo -e "${BLUE}🔌 Testing database connection...${NC}"
-if ! docker exec react_super_app_postgres pg_isready -U "$DB_USER" -d "$DB_NAME" > /dev/null 2>&1; then
+if ! docker exec spexture_com_postgres pg_isready -U "$DB_USER" -d "$DB_NAME" > /dev/null 2>&1; then
     echo -e "${RED}❌ Error: Cannot connect to database${NC}"
     exit 1
 fi
@@ -74,7 +74,7 @@ echo ""
 
 # Create migrations tracking table if it doesn't exist
 echo -e "${BLUE}📊 Checking migrations tracking table...${NC}"
-docker exec -i react_super_app_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
+docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
 CREATE TABLE IF NOT EXISTS schema_migrations (
     id SERIAL PRIMARY KEY,
     migration_number VARCHAR(10) NOT NULL UNIQUE,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 EOF
 
 # Check if migration already applied
-ALREADY_APPLIED=$(docker exec -i react_super_app_postgres psql -U "$DB_USER" -d "$DB_NAME" -t -c \
+ALREADY_APPLIED=$(docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" -t -c \
     "SELECT COUNT(*) FROM schema_migrations WHERE migration_number = '$MIGRATION_NUM';")
 
 if [ "$ALREADY_APPLIED" -gt 0 ]; then
@@ -102,7 +102,7 @@ fi
 # Generate admin password hash
 echo -e "${BLUE}🔐 Generating admin password hash...${NC}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-Admin123!}"
-ADMIN_EMAIL="${ADMIN_EMAIL:-admin@react-super-app.local}"
+ADMIN_EMAIL="${ADMIN_EMAIL:-admin@spexture-com.local}"
 
 # Use Node.js to generate bcrypt hash
 ADMIN_HASH=$(cd "$PROJECT_ROOT/server" && node -e "
@@ -130,13 +130,13 @@ sed "s|\$2b\$10\$rZ5LkH8K8xJQK5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K|$ADMIN_HA
 echo -e "${BLUE}🚀 Running migration...${NC}"
 echo ""
 
-if docker exec -i react_super_app_postgres psql -U "$DB_USER" -d "$DB_NAME" < "$TEMP_MIGRATION"; then
+if docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" < "$TEMP_MIGRATION"; then
     echo ""
     echo -e "${GREEN}✅ Migration completed successfully!${NC}"
     
     # Record migration
     MIGRATION_NAME=$(basename "$MIGRATION_PATH" .sql | cut -d'_' -f2-)
-    docker exec -i react_super_app_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
+    docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" <<EOF
 INSERT INTO schema_migrations (migration_number, migration_name)
 VALUES ('$MIGRATION_NUM', '$MIGRATION_NAME')
 ON CONFLICT (migration_number) DO UPDATE
@@ -172,7 +172,7 @@ rm -f "$TEMP_MIGRATION"
 # Show applied migrations
 echo ""
 echo -e "${BLUE}📋 Applied migrations:${NC}"
-docker exec -i react_super_app_postgres psql -U "$DB_USER" -d "$DB_NAME" -c \
+docker exec -i spexture_com_postgres psql -U "$DB_USER" -d "$DB_NAME" -c \
     "SELECT migration_number, migration_name, applied_at FROM schema_migrations ORDER BY applied_at;"
 
 echo ""

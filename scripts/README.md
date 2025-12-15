@@ -1,6 +1,6 @@
 # 📜 Scripts Directory
 
-Utility scripts for React Super App development, testing, and deployment.
+Utility scripts for Spexture-com development, testing, and deployment.
 
 ---
 

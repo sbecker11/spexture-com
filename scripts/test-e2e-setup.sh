@@ -18,7 +18,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║  React Super App - End-to-End Testing Setup               ║${NC}"
+echo -e "${BLUE}║  Spexture-com - End-to-End Testing Setup               ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -138,14 +138,14 @@ else
     # Remove project-specific images
     if [ "$CLEAN_IMAGES" = true ]; then
         echo -e "${YELLOW}   Removing old images...${NC}"
-        docker images | grep "react-super-app" | awk '{print $3}' | xargs -r docker rmi -f > /dev/null 2>&1 || true
-        docker images | grep "react_super_app" | awk '{print $3}' | xargs -r docker rmi -f > /dev/null 2>&1 || true
+        docker images | grep "spexture-com" | awk '{print $3}' | xargs -r docker rmi -f > /dev/null 2>&1 || true
+        docker images | grep "spexture_com" | awk '{print $3}' | xargs -r docker rmi -f > /dev/null 2>&1 || true
     fi
 
     # Remove volumes if requested
     if [ "$CLEAN_VOLUMES" = true ]; then
         echo -e "${YELLOW}   Removing volumes (fresh database)...${NC}"
-        docker volume rm react-super-app_postgres_data > /dev/null 2>&1 || true
+        docker volume rm spexture-com_postgres_data > /dev/null 2>&1 || true
     fi
 fi
 
@@ -161,7 +161,7 @@ sleep 5
 # Wait for database to be ready
 MAX_ATTEMPTS=30
 ATTEMPT=0
-while ! docker exec react_super_app_postgres pg_isready -U superapp_user -d react_super_app > /dev/null 2>&1; do
+while ! docker exec spexture_com_postgres pg_isready -U spexture_user -d spexture_com > /dev/null 2>&1; do
     ATTEMPT=$((ATTEMPT + 1))
     if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
         echo -e "${RED}❌ Database failed to start after ${MAX_ATTEMPTS} attempts${NC}"
@@ -283,7 +283,7 @@ echo ""
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════${NC}"
 echo -e "${YELLOW}🔑 ADMIN CREDENTIALS${NC}"
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════${NC}"
-echo -e "Email:    ${GREEN}admin@react-super-app.local${NC}"
+echo -e "Email:    ${GREEN}admin@spexture-com.local${NC}"
 echo -e "Password: ${GREEN}Admin123!${NC}"
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════${NC}"
 echo ""
@@ -309,7 +309,7 @@ echo -e "${GREEN}4. Logout again:${NC}"
 echo -e "   • Click 'Profile' → 'Logout'"
 echo ""
 echo -e "${GREEN}5. Login as admin:${NC}"
-echo -e "   • Email: admin@react-super-app.local"
+echo -e "   • Email: admin@spexture-com.local"
 echo -e "   • Password: Admin123!"
 echo -e "   • Verify 'Admin' link appears (gold/bold)"
 echo ""

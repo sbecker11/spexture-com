@@ -27,7 +27,7 @@ if ! docker compose ps postgres | grep -q "Up"; then
     # Wait for database to be ready
     MAX_ATTEMPTS=30
     ATTEMPT=0
-    while ! docker compose exec -T postgres pg_isready -U superapp_user -d react_super_app > /dev/null 2>&1; do
+    while ! docker compose exec -T postgres pg_isready -U spexture_user -d spexture_com > /dev/null 2>&1; do
         ATTEMPT=$((ATTEMPT + 1))
         if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
             echo -e "${RED}❌ PostgreSQL failed to start${NC}"

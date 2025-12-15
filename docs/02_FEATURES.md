@@ -1,6 +1,6 @@
 # 🎯 Features & Architecture
 
-High-level overview of the React Super App features, architecture, and development roadmap.
+High-level overview of the Spexture-com features, architecture, and development roadmap.
 
 ---
 
@@ -237,7 +237,7 @@ graph LR
 - Audit logging for all admin actions
 - Ownership checks (users can only access own data)
 
-**Default Admin**: `admin@react-super-app.local` / `Admin123!`
+**Default Admin**: `admin@spexture-com.local` / `Admin123!`
 
 **Files**: `server/src/middleware/rbac.js`, `server/src/routes/admin.js`
 

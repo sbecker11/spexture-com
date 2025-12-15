@@ -1,4 +1,4 @@
-// FILEPATH: /Users/sbecker11/workspace-react/react-super-app/src/components/About.test.js
+// FILEPATH: /Users/sbecker11/workspace-react/spexture-com/src/components/About.test.js
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react'; 

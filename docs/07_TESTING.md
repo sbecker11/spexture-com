@@ -1,6 +1,6 @@
 # 🧪 Testing Guide
 
-Complete guide to testing the React Super App, including client tests, server tests, and coverage analysis.
+Complete guide to testing the Spexture-com, including client tests, server tests, and coverage analysis.
 
 ---
 
@@ -308,7 +308,7 @@ describe('Auth API', () => {
     const response = await request(app)
       .post('/api/auth/login')
       .send({
-        email: 'admin@react-super-app.local',
+        email: 'admin@spexture-com.local',
         password: 'Admin123!'
       });
 

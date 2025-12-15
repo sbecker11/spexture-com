@@ -20,7 +20,7 @@ Complete guide to the React client application, including components, routing, a
 
 ## 📊 Overview
 
-The React Super App client is a single-page application built with React 18, featuring:
+The Spexture-com client is a single-page application built with React 18, featuring:
 - User authentication and authorization
 - Protected routes with role-based access
 - Form validation with Yup

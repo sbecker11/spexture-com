@@ -387,7 +387,7 @@ ALTER TABLE job_descriptions ADD CONSTRAINT check_jd_remote_policy
 INSERT INTO users (name, email, password_hash, role, is_active)
 VALUES (
     'System Admin',
-    'admin@react-super-app.local',
+    'admin@spexture-com.local',
     '$2b$10$rZ5LkH8K8xJQK5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K5Y5K',
     -- This is a placeholder hash - will be replaced by actual bcrypt hash
     'admin',

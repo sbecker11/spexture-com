@@ -1,6 +1,6 @@
 # 🚀 Getting Started Guide
 
-Complete guide to get your React Super App up and running with Docker Compose, PostgreSQL, and REST API.
+Complete guide to get your Spexture-com up and running with Docker Compose, PostgreSQL, and REST API.
 
 ---
 
@@ -26,7 +26,7 @@ Before you begin, ensure you have the following installed and running:
   - Verify Docker is running: `docker info`
   - Verify versions: `docker --version` and `docker compose --version`
 - **Git** - For cloning the repository
-- **Ports Available**: Ensure ports 3000 (client), 3001 (server), and 5432 (database) are not in use
+- **Ports Available**: Ensure ports 3000 (client), 3001 (server), and 5433 (database) are not in use (5432 reserved for react-super-app)
 
 **Quick Port Check:**
 ```bash
@@ -41,8 +41,8 @@ npm run check-ports
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/sbecker11/react-super-app.git
-cd react-super-app
+git clone https://github.com/sbecker11/spexture-com.git
+cd spexture-com
 ```
 
 ### Step 2: Configure Environment
@@ -66,7 +66,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 **Optional Customization**: Edit `.env` to change:
 - **`NODE_ENV`**: `development`, `production`, or `test`
 - **`REACT_APP_ENV`**: Should match `NODE_ENV`
-- **Port numbers**: If defaults (3000, 3001, 5432) conflict with other services
+- **Port numbers**: If defaults (3000, 3001, 5433) conflict with other services (5432 reserved for react-super-app)
 
 **Note**: The `.env` file is in `.gitignore` and won't be committed to Git.
 
@@ -114,7 +114,7 @@ npm run start:services:detached
 
 **What happens:**
 - ✅ Builds Docker images for all services (first time only)
-- ✅ Starts PostgreSQL database container (port 5432)
+- ✅ Starts PostgreSQL database container (port 5433, 5432 reserved for react-super-app)
 - ✅ Starts Express REST API server (port 3001)
 - ✅ Starts React development client (port 3000)
 
@@ -177,7 +177,7 @@ Use this guide when you need more control over the setup process or when trouble
 docker compose down -v
 
 # Remove old images (optional)
-docker images | grep -E "react-super-app|react_super_app" | awk '{print $3}' | xargs docker rmi -f 2>/dev/null || true
+docker images | grep -E "spexture-com|spexture_com" | awk '{print $3}' | xargs docker rmi -f 2>/dev/null || true
 ```
 
 #### **Step 2: Start PostgreSQL**
@@ -268,7 +268,7 @@ For the best development experience, use 4 terminals:
 graph TB
     subgraph "Development Environment"
         subgraph "Terminal 1: Database"
-            DB[PostgreSQL in Docker<br/>npm run db:init<br/>Port 5432]
+            DB[PostgreSQL in Docker<br/>npm run db:init<br/>Port 5433]
         end
 
         subgraph "Terminal 2: Server"
@@ -503,7 +503,7 @@ docker compose restart postgres
 
 # Wait for ready
 sleep 3
-docker exec react_super_app_postgres pg_isready -U superapp_user
+docker exec spexture_com_postgres pg_isready -U spexture_user
 ```
 
 #### **Restart Backend Only**
@@ -552,7 +552,7 @@ rm -f .server.pid .client.pid
 docker compose down
 
 # Remove images
-docker images | grep -E "react-super-app|react_super_app" | awk '{print $3}' | xargs docker rmi -f
+docker images | grep -E "spexture-com|spexture_com" | awk '{print $3}' | xargs docker rmi -f
 
 # Keep volumes (database data persists)
 ```
@@ -564,10 +564,10 @@ docker images | grep -E "react-super-app|react_super_app" | awk '{print $3}' | x
 docker compose down -v
 
 # Remove images
-docker images | grep -E "react-super-app|react_super_app" | awk '{print $3}' | xargs docker rmi -f
+docker images | grep -E "spexture-com|spexture_com" | awk '{print $3}' | xargs docker rmi -f
 
 # Remove networks
-docker network ls | grep react_super_app | awk '{print $1}' | xargs docker network rm
+docker network ls | grep spexture_com | awk '{print $1}' | xargs docker network rm
 ```
 
 ---
@@ -598,7 +598,7 @@ docker network ls | grep react_super_app | awk '{print $1}' | xargs docker netwo
    kill -9 <PID>
    ```
 
-### Issue: "role superapp_user does not exist"
+### Issue: "role spexture_user does not exist"
 
 **Cause**: PostgreSQL container was created without proper environment variables.
 
@@ -616,19 +616,19 @@ docker compose up -d postgres
 sleep 5
 
 # 4. Verify user exists
-docker exec react_super_app_postgres psql -U postgres -c "\du"
+docker exec spexture_com_postgres psql -U postgres -c "\du"
 
-# 5. If superapp_user doesn't exist, create it
-docker exec react_super_app_postgres psql -U postgres -c "CREATE USER superapp_user WITH PASSWORD 'superapp_password' CREATEDB;"
-docker exec react_super_app_postgres psql -U postgres -c "CREATE DATABASE react_super_app OWNER superapp_user;"
+# 5. If spexture_user doesn't exist, create it
+docker exec spexture_com_postgres psql -U postgres -c "CREATE USER spexture_user WITH PASSWORD 'superapp_password' CREATEDB;"
+docker exec spexture_com_postgres psql -U postgres -c "CREATE DATABASE spexture_com OWNER spexture_user;"
 
 # 6. Run migration
 npm run db:migrate:001
 ```
 
-### Issue: "Port 5432 already in use"
+### Issue: "Port 5433 already in use"
 
-**Cause**: Local PostgreSQL or another Docker container is using port 5432.
+**Cause**: Local PostgreSQL or another Docker container is using port 5433. (Note: Port 5432 is reserved for react-super-app)
 
 **Solution**:
 ```bash
@@ -723,7 +723,7 @@ docker ps | grep postgres
 docker compose up -d postgres
 
 # Wait for it to be ready
-docker exec react_super_app_postgres pg_isready -U superapp_user
+docker exec spexture_com_postgres pg_isready -U spexture_user
 
 # Check logs for errors
 docker compose logs postgres
@@ -739,7 +739,7 @@ docker compose logs postgres
 docker ps | grep postgres
 
 # 2. Test connection
-docker exec react_super_app_postgres psql -U superapp_user -d react_super_app -c "SELECT 1;"
+docker exec spexture_com_postgres psql -U spexture_user -d spexture_com -c "SELECT 1;"
 
 # 3. Check if migration already applied
 npm run db:shell
@@ -748,8 +748,8 @@ SELECT * FROM schema_migrations;
 
 # 4. If needed, manually drop and recreate
 npm run db:shell
-DROP DATABASE react_super_app;
-CREATE DATABASE react_super_app OWNER superapp_user;
+DROP DATABASE spexture_com;
+CREATE DATABASE spexture_com OWNER spexture_user;
 \q
 
 # 5. Run migration again
@@ -783,7 +783,7 @@ docker compose logs -f postgres  # Follow logs
 docker ps                        # List running containers
 
 # Ports
-lsof -i :5432            # Check database port
+lsof -i :5433            # Check database port (5432 reserved for react-super-app)
 lsof -i :3001            # Check backend port
 lsof -i :3000            # Check frontend port
 npm run check-ports      # Check all ports
@@ -821,9 +821,9 @@ Once everything is running:
 ## 📚 Available Services
 
 ### PostgreSQL Database
-- **Port**: 5432
-- **Database**: `react_super_app`
-- **User**: `superapp_user`
+- **Port**: 5433 (5432 reserved for react-super-app)
+- **Database**: `spexture_com`
+- **User**: `spexture_user`
 - **Password**: `superapp_password`
 - **Schema**: Auto-initialized from `server/database/init.sql`
 

@@ -1,4 +1,4 @@
-# 🚀 React Super App
+# 🚀 Spexture-com
 
 A full-stack job search tracking application built with React 18, Express.js, and PostgreSQL. Track job applications, manage resumes, organize recruiters, and analyze job descriptions—all in one place.
 
@@ -64,8 +64,8 @@ npm run check-ports
 
 **Step 1: Clone the repository**
 ```bash
-git clone https://github.com/sbecker11/react-super-app.git
-cd react-super-app
+git clone https://github.com/sbecker11/spexture-com.git
+cd spexture-com
 ```
 
 **Step 2: Configure environment**
@@ -133,10 +133,10 @@ The application uses environment variables for configuration. Copy `.env.example
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `POSTGRES_USER` | `superapp_user` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | `superapp_password` | PostgreSQL password |
-| `POSTGRES_DB` | `react_super_app` | Database name |
-| `POSTGRES_PORT` | `5432` | PostgreSQL port |
+| `POSTGRES_USER` | `spexture_user` | PostgreSQL username |
+| `POSTGRES_PASSWORD` | `spexture_password` | PostgreSQL password |
+| `POSTGRES_DB` | `spexture_com` | Database name |
+| `POSTGRES_PORT` | `5433` | PostgreSQL port (5432 reserved for react-super-app) |
 
 ### Server Configuration
 
@@ -159,10 +159,10 @@ The application uses environment variables for configuration. Copy `.env.example
 
 ```bash
 # Database
-POSTGRES_USER=superapp_user
-POSTGRES_PASSWORD=superapp_password
-POSTGRES_DB=react_super_app
-POSTGRES_PORT=5432
+POSTGRES_USER=spexture_user
+POSTGRES_PASSWORD=spexture_password
+POSTGRES_DB=spexture_com
+POSTGRES_PORT=5433
 
 # Server
 SERVER_PORT=3001

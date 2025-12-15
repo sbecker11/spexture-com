@@ -76,7 +76,7 @@ const TestingCoverage = () => {
   };
 
   const handleCopyCommand = () => {
-    const projectRoot = '/Users/sbecker11/workspace-react/react-super-app';
+    const projectRoot = '/Users/sbecker11/workspace-react/spexture-com';
     const command = activeTab === 'client'
       ? `cd ${projectRoot} && npm run test:coverage`
       : `cd ${projectRoot}/server && npm run test:coverage`;

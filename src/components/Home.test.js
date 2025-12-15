@@ -1,4 +1,4 @@
-// FILEPATH: /Users/sbecker11/workspace-react/react-super-app/src/components/Home.test.js
+// FILEPATH: /Users/sbecker11/workspace-react/spexture-com/src/components/Home.test.js
 
 import { render, screen } from '@testing-library/react';
 import React from 'react'; 

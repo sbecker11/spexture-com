@@ -222,7 +222,7 @@ This method is more complex but gives you complete control over the setup.
 
 ## Your Current Project
 
-Your current React app (`react-super-app`) was created using **Create React App**. You can see this because:
+Your current React app (`spexture-com`) was created using **Create React App**. You can see this because:
 - It has `react-scripts` in `package.json`
 - The folder structure matches CRA conventions
 - The `public/` and `src/` directories are set up automatically

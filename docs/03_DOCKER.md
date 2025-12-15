@@ -1,6 +1,6 @@
 # 🐳 Docker Setup & Configuration Guide
 
-Complete guide for setting up and running the React Super App using Docker Compose with PostgreSQL and REST API.
+Complete guide for setting up and running the Spexture-com using Docker Compose with PostgreSQL and REST API.
 
 ---
 
@@ -38,7 +38,7 @@ Complete guide for setting up and running the React Super App using Docker Compo
 ### Project Structure
 
 ```
-react-super-app/
+spexture-com/
 ├── docker-compose.yml          # Docker orchestration
 ├── Dockerfile.client           # React client Dockerfile
 ├── .dockerignore              # Docker ignore rules
@@ -84,7 +84,7 @@ react-super-app/
 
 Make sure you're in the project root directory:
 ```bash
-cd /Users/sbecker11/workspace-react/react-super-app
+cd /Users/sbecker11/workspace-react/spexture-com
 ```
 
 ### 2. Create Environment File
@@ -130,7 +130,7 @@ This will:
 - **React Client**: http://localhost:3000
 - **REST API Server**: http://localhost:3001
 - **API Health Check**: http://localhost:3001/health
-- **PostgreSQL**: localhost:5432 (for direct database access)
+- **PostgreSQL**: localhost:5433 (for direct database access, 5432 reserved for react-super-app)
 
 ---
 
@@ -138,9 +138,9 @@ This will:
 
 ### PostgreSQL Database
 - **Image**: postgres:15-alpine
-- **Port**: 5432
-- **Database**: react_super_app
-- **User**: superapp_user
+- **Port**: 5433 (host port, 5432 reserved for react-super-app)
+- **Database**: spexture_com
+- **User**: spexture_user
 - **Password**: superapp_password (change in production)
 - **Volume**: Persistent data storage (`postgres_data`)
 - **Features**:
@@ -226,16 +226,16 @@ docker compose logs --tail=100 server
 
 ```bash
 # Connect to PostgreSQL container
-docker compose exec postgres psql -U superapp_user -d react_super_app
+docker compose exec postgres psql -U spexture_user -d spexture_com
 
 # Run SQL commands
-docker compose exec postgres psql -U superapp_user -d react_super_app -c "SELECT * FROM users;"
+docker compose exec postgres psql -U spexture_user -d spexture_com -c "SELECT * FROM users;"
 
 # Backup database
-docker compose exec postgres pg_dump -U superapp_user react_super_app > backup.sql
+docker compose exec postgres pg_dump -U spexture_user spexture_com > backup.sql
 
 # Restore database
-docker compose exec -T postgres psql -U superapp_user react_super_app < backup.sql
+docker compose exec -T postgres psql -U spexture_user spexture_com < backup.sql
 ```
 
 ### Database Management Commands (npm scripts)
@@ -503,7 +503,7 @@ Docker Desktop needs access to the project directory to mount files into contain
 
 ### Folder to Share
 ```
-/Users/sbecker11/workspace-react/react-super-app
+/Users/sbecker11/workspace-react/spexture-com
 ```
 
 ### macOS Instructions
@@ -522,7 +522,7 @@ Docker Desktop needs access to the project directory to mount files into contain
 
 4. **Add the Project Directory**
    - Click the "+" button or "Add folder" button
-   - Navigate to: `/Users/sbecker11/workspace-react/react-super-app`
+   - Navigate to: `/Users/sbecker11/workspace-react/spexture-com`
    - Click "Apply & Restart"
 
 5. **Wait for Docker to Restart**
@@ -542,7 +542,7 @@ This will give Docker access to all projects in that directory.
 
 After configuring, verify with:
 ```bash
-docker run --rm -v /Users/sbecker11/workspace-react/react-super-app:/test alpine ls /test
+docker run --rm -v /Users/sbecker11/workspace-react/spexture-com:/test alpine ls /test
 ```
 
 This should list the files in your project directory without errors.
@@ -551,7 +551,7 @@ This should list the files in your project directory without errors.
 
 Run this to check if the folder is already shared:
 ```bash
-docker run --rm -v /Users/sbecker11/workspace-react/react-super-app:/test alpine ls /test/server/database/init.sql 2>&1
+docker run --rm -v /Users/sbecker11/workspace-react/spexture-com:/test alpine ls /test/server/database/init.sql 2>&1
 ```
 
 If it shows the file, file sharing is configured correctly!
@@ -595,7 +595,7 @@ docker compose logs postgres
 docker compose restart postgres
 
 # Test connection
-docker compose exec postgres pg_isready -U superapp_user
+docker compose exec postgres pg_isready -U spexture_user
 ```
 
 ### Container Won't Start
@@ -685,7 +685,7 @@ For production:
 
 ### 5. Backup database regularly:
    ```bash
-   docker compose exec postgres pg_dump -U superapp_user react_super_app > backup.sql
+   docker compose exec postgres pg_dump -U spexture_user spexture_com > backup.sql
    ```
 
 ### 6. Security Checklist:

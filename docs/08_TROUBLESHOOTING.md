@@ -1,6 +1,6 @@
 # 🆘 Troubleshooting Guide
 
-Common issues and solutions for the React Super App application.
+Common issues and solutions for the Spexture-com application.
 
 ---
 
@@ -95,7 +95,7 @@ npm run db:init
 2. Wait a few seconds after starting the container
 3. Check if the database is ready:
    ```bash
-   docker-compose exec postgres pg_isready -U superapp_user
+   docker-compose exec postgres pg_isready -U spexture_user
    ```
 
 ---
@@ -270,13 +270,13 @@ npm run db:init
 ### Backup Database
 
 ```bash
-docker-compose exec postgres pg_dump -U superapp_user react_super_app > backup.sql
+docker-compose exec postgres pg_dump -U spexture_user spexture_com > backup.sql
 ```
 
 ### Restore Database
 
 ```bash
-docker-compose exec -T postgres psql -U superapp_user react_super_app < backup.sql
+docker-compose exec -T postgres psql -U spexture_user spexture_com < backup.sql
 ```
 
 ---
@@ -364,7 +364,7 @@ docker-compose --version
 docker-compose logs
 
 # Check database connection
-docker-compose exec postgres pg_isready -U superapp_user
+docker-compose exec postgres pg_isready -U spexture_user
 
 # Test API health
 curl http://localhost:3001/health

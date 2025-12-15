@@ -1,4 +1,4 @@
-// FILEPATH: /Users/sbecker11/workspace-react/react-super-app/src/components/LoginRegister.test.js
+// FILEPATH: /Users/sbecker11/workspace-react/spexture-com/src/components/LoginRegister.test.js
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react'; 

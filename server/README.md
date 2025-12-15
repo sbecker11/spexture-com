@@ -1,4 +1,4 @@
-# React Super App Server
+# Spexture-com Server
 
 Express.js REST API server with PostgreSQL database.
 
@@ -32,9 +32,9 @@ PORT=3001
 
 DB_HOST=postgres
 DB_PORT=5432
-DB_USER=superapp_user
-DB_PASSWORD=superapp_password
-DB_NAME=react_super_app
+DB_USER=spexture_user
+DB_PASSWORD=spexture_password
+DB_NAME=spexture_com
 
 JWT_SECRET=your-super-secret-jwt-key-change-in-production
 JWT_EXPIRES_IN=24h

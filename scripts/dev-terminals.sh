@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# React Super App - 4-Terminal Development Setup
+# Spexture-com - 4-Terminal Development Setup
 # Opens iTerm2 window with 4 panes (tabs) with different background colors:
 # Top-left: Database (Cyan) | Top-right: Server (Green)
 # Bottom-left: Client (Blue) | Bottom-right: Claude (Purple)

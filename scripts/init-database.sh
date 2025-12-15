@@ -22,10 +22,10 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
 fi
 
 # Database configuration with defaults
-POSTGRES_USER=${POSTGRES_USER:-superapp_user}
-POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-superapp_password}
-POSTGRES_DB=${POSTGRES_DB:-react_super_app}
-POSTGRES_PORT=${POSTGRES_PORT:-5432}
+POSTGRES_USER=${POSTGRES_USER:-spexture_user}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-spexture_password}
+POSTGRES_DB=${POSTGRES_DB:-spexture_com}
+POSTGRES_PORT=${POSTGRES_PORT:-5433}
 DB_HOST=${DB_HOST:-localhost}
 
 # Source the port checker script
@@ -237,5 +237,7 @@ echo -e "  postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$DB_HOST:$POSTGRES_POR
 echo ""
 echo -e "${BLUE}To connect manually:${NC}"
 echo -e "  $DOCKER_COMPOSE_CMD exec postgres psql -U $POSTGRES_USER -d $POSTGRES_DB"
+echo ""
+echo -e "${YELLOW}Note: This database is isolated for spexture-com. Other databases may exist on this PostgreSQL instance.${NC}"
 echo ""
 

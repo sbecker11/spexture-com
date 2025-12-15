@@ -1,4 +1,4 @@
-// FILEPATH: /Users/sbecker11/workspace-react/react-super-app/src/components/Footer.test.js
+// FILEPATH: /Users/sbecker11/workspace-react/spexture-com/src/components/Footer.test.js
 
 import { render, screen } from '@testing-library/react';
 import React from 'react'; 

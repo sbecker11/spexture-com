@@ -2,20 +2,20 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: react_super_app_postgres
+    container_name: spexture_com_postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-superapp_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-superapp_password}
-      POSTGRES_DB: ${POSTGRES_DB:-react_super_app}
+      POSTGRES_USER: ${POSTGRES_USER:-spexture_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
+      POSTGRES_DB: ${POSTGRES_DB:-spexture_com}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-5433}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - spexture_com_postgres_data:/var/lib/postgresql/data
       # Note: init.sql is handled by scripts/init-database.sh to avoid requiring file sharing
     networks:
-      - react_super_app_network
+      - spexture_com_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-superapp_user}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spexture_user}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,15 +26,15 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: react_super_app_server
+    container_name: spexture_com_server
     environment:
       NODE_ENV: ${NODE_ENV:-development}
       PORT: ${SERVER_PORT:-3001}
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_USER: ${POSTGRES_USER:-superapp_user}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-superapp_password}
-      DB_NAME: ${POSTGRES_DB:-react_super_app}
+      DB_USER: ${POSTGRES_USER:-spexture_user}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-spexture_password}
+      DB_NAME: ${POSTGRES_DB:-spexture_com}
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
     ports:
@@ -46,7 +46,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - react_super_app_network
+      - spexture_com_network
     restart: unless-stopped
     command: npm run dev
 
@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.client
-    container_name: react_super_app_client
+    container_name: spexture_com_client
     environment:
       REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3001/api}
       REACT_APP_ENV: ${REACT_APP_ENV:-development}
@@ -67,17 +67,17 @@ services:
     depends_on:
       - server
     networks:
-      - react_super_app_network
+      - spexture_com_network
     restart: unless-stopped
     stdin_open: true
     tty: true
     command: npm start
 
 volumes:
-  postgres_data:
+  spexture_com_postgres_data:
     driver: local
 
 networks:
-  react_super_app_network:
+  spexture_com_network:
     driver: bridge
 

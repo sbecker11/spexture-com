@@ -1,4 +1,4 @@
-# React Super App - Quick Start
+# Spexture-com - Quick Start
 
 ## 🚀 Start Everything (One Command)
 
@@ -21,7 +21,7 @@ npm run test:e2e
 
 **Admin Credentials (shown in terminal output):**
 ```
-Email:    admin@react-super-app.local
+Email:    admin@spexture-com.local
 Password: Admin123!
 ```
 
@@ -111,7 +111,7 @@ npm run check-ports
 # Kill processes on specific ports (if needed)
 lsof -ti:3000 | xargs kill -9  # Client port
 lsof -ti:3001 | xargs kill -9  # Server port
-lsof -ti:5432 | xargs kill -9  # Database port
+lsof -ti:5433 | xargs kill -9  # Database port (5432 reserved for react-super-app)
 ```
 
 ### Clean Start
