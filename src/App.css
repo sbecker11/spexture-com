@@ -1,0 +1,387 @@
+/* App.css */
+/* CSS Variables are now defined in index.css */
+
+/* Prevent any images from causing overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  color: var(--link-color);
+  width: 40px;
+  height: 40px;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.2);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+/* Scale down the moon icon to match sun size and make it dark grey */
+.moon-icon {
+  display: inline-block;
+  transform: scale(0.5);
+  transform-origin: center;
+  filter: grayscale(100%) brightness(0.3);
+}
+
+/* Styling for the Header */
+header {
+    background-color: var(--header-bg) !important;
+    color: var(--link-color) !important;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Styling for the Header Links */
+  header nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Display links horizontally */
+    align-items: center; /* Vertically center links */
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+    gap: 0; /* Remove gap to avoid layout issues */
+  }
+
+  .header-left {
+    width: 75px;
+    height: 75px;
+    margin-left: 12.5px;
+    flex-shrink: 0;
+  }
+
+  .header-logo {
+    width: 75px;
+    height: 75px;
+  }
+
+  .header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+  }
+  
+
+  header a {
+    margin-right: 25px; /* Add margin to header links */
+    text-decoration: none; /* Remove underlines from links */
+    color: var(--link-color) !important;
+    transition: all 0.2s ease;
+  }
+  
+  /* Ensure all link states use the global variable */
+  header a:link,
+  header a:visited,
+  header a:hover,
+  header a:active {
+    color: var(--link-color) !important;
+  }
+
+  /* Active link styling for header */
+  header a.active {
+    font-weight: bold;
+    text-decoration: underline;
+    opacity: 1;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* User Profile in Header */
+  .header-user-profile {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+  }
+
+  .header-user-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+    color: var(--text-color) !important;
+    transition: opacity 0.2s ease;
+  }
+
+  .header-user-link:hover {
+    opacity: 0.8;
+  }
+
+  .header-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .header-user-link:hover .header-user-avatar {
+    transform: scale(1.05);
+  }
+
+  .header-user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .header-user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+  }
+
+  .header-switch-back-link {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    padding: 0;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .header-switch-back-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* Styling for the Footer */
+  footer {
+    background-color: var(--footer-bg) !important;
+    color: var(--link-color) !important;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Container for left-column and body-content */
+  .container {
+    position: absolute;
+    top: 100px;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  /* Styling for the left-column */
+  .left-column {
+    background-color: var(--sidebar-bg) !important;
+    color: var(--text-color) !important;
+    width: 175px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
+    border-right: 1px solid var(--sidebar-bg) !important;
+  }
+
+  /* Styling for left-column scrollbar */
+  .left-column {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--body-bg) var(--sidebar-bg); /* Firefox: thumb and track */
+  }
+
+  .left-column::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .left-column::-webkit-scrollbar-track {
+    background: var(--sidebar-bg) !important;
+    background-color: var(--sidebar-bg) !important;
+  }
+
+  .left-column::-webkit-scrollbar-thumb {
+    background: var(--body-bg) !important;
+    background-color: var(--body-bg) !important;
+    border-radius: 6px;
+  }
+
+  .left-column::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+  }
+
+  /* User Profile Section in Sidebar */
+  .user-profile-section {
+    padding: 20px 15px;
+    border-bottom: 1px solid var(--body-bg);
+    margin-bottom: 10px;
+  }
+
+  .user-profile-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+    color: var(--text-color) !important;
+    transition: all 0.2s ease;
+  }
+
+  .user-profile-link:hover {
+    opacity: 0.8;
+  }
+
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+
+  .user-profile-link:hover .user-avatar {
+    transform: scale(1.05);
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  /* Impersonation Indicator */
+  .impersonation-indicator {
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .switch-back-link {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: inherit;
+  }
+
+  .switch-back-link:hover {
+    opacity: 1;
+    background-color: var(--body-bg);
+    text-decoration: underline;
+  }
+
+  /* Styling for left sidebar links */
+  .left a,
+  .left-column a {
+    color: var(--link-color) !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .left a:link,
+  .left a:visited,
+  .left a:hover,
+  .left a:active,
+  .left-column a:link,
+  .left-column a:visited,
+  .left-column a:hover,
+  .left-column a:active {
+    color: var(--link-color) !important;
+  }
+
+  /* Active link styling for left sidebar */
+  .left a.active,
+  .left-column a.active {
+    font-weight: bold;
+    text-decoration: underline;
+    opacity: 1;
+    pointer-events: none;
+    cursor: default;
+  }
+  
+  /* Styling for the body-content */
+  .body-content {
+    position: absolute;
+    left: 175px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background-color: var(--body-bg) !important;
+    color: var(--text-color) !important;
+    box-sizing: border-box;
+    padding: 20px;
+  }
+
+  /* Styling for body-content scrollbar */
+  .body-content {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--body-bg) var(--sidebar-bg); /* Firefox: thumb and track */
+  }
+
+  .body-content::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .body-content::-webkit-scrollbar-track {
+    background: var(--sidebar-bg) !important;
+    background-color: var(--sidebar-bg) !important;
+  }
+
+  .body-content::-webkit-scrollbar-thumb {
+    background: var(--body-bg) !important;
+    background-color: var(--body-bg) !important;
+    border-radius: 6px;
+  }
+
+  .body-content::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+  }

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Client Coverage Report</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="data:text/css,table{border-collapse:collapse;width:100%}th,td{border:1px solid \#ddd;padding:8px 12px;text-align:left}th{background:\#1a1a2e;color:white}tr:nth-child(even){background:\#f9f9f9}code{background:\#e8e8e8;padding:2px 6px;border-radius:4px}" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Client Coverage Report</h1>
+</header>
+<h2 id="overall-coverage">Overall Coverage</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Covered</th>
+<th>Total</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lines</strong></td>
+<td>810</td>
+<td>1012</td>
+<td>🟢 <strong>80.03%</strong></td>
+</tr>
+<tr>
+<td><strong>Statements</strong></td>
+<td>845</td>
+<td>1058</td>
+<td>🟡 <strong>79.86%</strong></td>
+</tr>
+<tr>
+<td><strong>Functions</strong></td>
+<td>192</td>
+<td>242</td>
+<td>🟡 <strong>79.33%</strong></td>
+</tr>
+<tr>
+<td><strong>Branches</strong></td>
+<td>544</td>
+<td>803</td>
+<td>🟠 <strong>67.74%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="coverage-status-good">Coverage Status: 🟡 Good</h3>
+<p>Overall coverage: <strong>76.74%</strong></p>
+<hr />
+<h2 id="file-coverage-details">File Coverage Details</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 15%" />
+<col style="width: 26%" />
+<col style="width: 23%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>Lines</th>
+<th>Statements</th>
+<th>Functions</th>
+<th>Branches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/App.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/setupTests.integration.js</code></td>
+<td>🔴 0.0%</td>
+<td>🔴 0.0%</td>
+<td>🔴 0.0%</td>
+<td>🔴 0.0%</td>
+</tr>
+<tr>
+<td><code>src/test-utils.js</code></td>
+<td>🟠 50.0%</td>
+<td>🟠 50.0%</td>
+<td>🔴 28.6%</td>
+<td>🔴 33.3%</td>
+</tr>
+<tr>
+<td><code>src/components/About.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/AdminAuthModal.js</code></td>
+<td>🟡 78.9%</td>
+<td>🟢 80.5%</td>
+<td>🟢 88.9%</td>
+<td>🟠 65.5%</td>
+</tr>
+<tr>
+<td><code>src/components/AdminDashboard.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/DevTools.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/ErrorBoundary.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🔴 45.5%</td>
+</tr>
+<tr>
+<td><code>src/components/Footer.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/Header.js</code></td>
+<td>🟠 51.2%</td>
+<td>🟠 50.0%</td>
+<td>🟠 50.0%</td>
+<td>🟠 68.0%</td>
+</tr>
+<tr>
+<td><code>src/components/Home.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/JDAnalyzer.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 98.2%</td>
+<td>🟢 100.0%</td>
+<td>🟢 89.6%</td>
+</tr>
+<tr>
+<td><code>src/components/Left.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟡 77.8%</td>
+</tr>
+<tr>
+<td><code>src/components/Loading.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/LoginRegister.js</code></td>
+<td>🟢 87.7%</td>
+<td>🟢 87.5%</td>
+<td>🟢 89.3%</td>
+<td>🟡 73.1%</td>
+</tr>
+<tr>
+<td><code>src/components/NotFound.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/PageContainer.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/Profile.js</code></td>
+<td>🟢 90.0%</td>
+<td>🟢 88.6%</td>
+<td>🟡 73.3%</td>
+<td>🟠 61.4%</td>
+</tr>
+<tr>
+<td><code>src/components/ProtectedRoute.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/TestPage.js</code></td>
+<td>🔴 0.0%</td>
+<td>🔴 0.0%</td>
+<td>🔴 0.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/components/UserEditModal.js</code></td>
+<td>🟢 85.2%</td>
+<td>🟢 87.0%</td>
+<td>🟢 82.6%</td>
+<td>🟡 73.8%</td>
+</tr>
+<tr>
+<td><code>src/components/UserManagement.js</code></td>
+<td>🟠 59.1%</td>
+<td>🟠 58.3%</td>
+<td>🟠 51.2%</td>
+<td>🟠 50.6%</td>
+</tr>
+<tr>
+<td><code>src/contexts/AuthContext.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 85.7%</td>
+</tr>
+<tr>
+<td><code>src/contexts/ThemeContext.js</code></td>
+<td>🟢 85.7%</td>
+<td>🟢 86.4%</td>
+<td>🟢 100.0%</td>
+<td>🟠 50.0%</td>
+</tr>
+<tr>
+<td><code>src/services/adminAPI.js</code></td>
+<td>🟢 93.0%</td>
+<td>🟢 93.0%</td>
+<td>🟢 90.0%</td>
+<td>🟢 88.9%</td>
+</tr>
+<tr>
+<td><code>src/services/api.js</code></td>
+<td>🟢 98.5%</td>
+<td>🟢 98.6%</td>
+<td>🟢 100.0%</td>
+<td>🟢 90.9%</td>
+</tr>
+<tr>
+<td><code>src/utils/serverCheck.js</code></td>
+<td>🟠 51.6%</td>
+<td>🟠 50.0%</td>
+<td>🟠 50.0%</td>
+<td>🔴 38.5%</td>
+</tr>
+<tr>
+<td><code>src/validation/fieldValidation.js</code></td>
+<td>🟢 96.2%</td>
+<td>🟢 96.2%</td>
+<td>🟢 100.0%</td>
+<td>🟢 95.5%</td>
+</tr>
+<tr>
+<td><code>src/validation/index.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/validation/validationConfig.js</code></td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+<td>🟢 100.0%</td>
+</tr>
+<tr>
+<td><code>src/validation/validationSchemas.js</code></td>
+<td>🟠 63.1%</td>
+<td>🟠 64.1%</td>
+<td>🟡 72.7%</td>
+<td>🟠 61.5%</td>
+</tr>
+<tr>
+<td><code>src/validation/validationUtils.js</code></td>
+<td>🟠 61.8%</td>
+<td>🟠 61.8%</td>
+<td>🟠 50.0%</td>
+<td>🟠 66.7%</td>
+</tr>
+<tr>
+<td><strong>OVERALL</strong></td>
+<td>🟢 <strong>80.0%</strong></td>
+<td>🟡 <strong>79.9%</strong></td>
+<td>🟡 <strong>79.3%</strong></td>
+<td>🟠 <strong>67.7%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="legend">Legend</h2>
+<ul>
+<li>🟢 <strong>Excellent</strong> (≥80%)</li>
+<li>🟡 <strong>Good</strong> (70-79%)</li>
+<li>🟠 <strong>Fair</strong> (50-69%)</li>
+<li>🔴 <strong>Poor</strong> (&lt;50%)</li>
+</ul>
+<hr />
+<h2 id="recommendations">Recommendations</h2>
+<ul>
+<li>⚠️ <strong>Branch coverage is low (67.7%)</strong> - Add more tests
+for conditional logic and edge cases</li>
+</ul>
+</body>
+</html>

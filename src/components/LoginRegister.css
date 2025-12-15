@@ -1,0 +1,152 @@
+/* LoginRegister.css */
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Add a consistent margin between input fields */
+  }
+  
+  .label-error-container {
+    display: flex;
+    justify-content: space-between; /* Align label and error message */
+    margin-bottom: 5px; /* Add spacing between labels and inputs */
+  }
+  
+  .label-error-container label {
+    margin-left: 10px; /* Adjust the left margin as needed */
+  }
+  
+  .label-error-container .error {
+    color: red;
+    font-size: 14px;
+    margin-left: 10px; /* Adjust the left margin as needed */
+  }
+  
+  .profile-form input {
+    width: 100%;
+    height: 38px; /* Consistent height for all inputs */
+    padding: 8px 12px; /* Consistent padding */
+    border: 1px solid rgb(128, 128, 128); /* Grey border initially */
+    border-radius: 3px;
+    font-size: 16px; /* Consistent font size */
+    font-family: inherit;
+    line-height: 1.5; /* Consistent line height */
+    transition: border-color 0.2s ease; /* Smooth transition for border color */
+    background-color: var(--body-bg);
+    color: var(--text-color);
+    box-sizing: border-box; /* Include padding and border in width calculation */
+  }
+  
+  /* Password input with show/hide button - maintain same height and font size */
+  .profile-form input[type="password"],
+  .profile-form input[type="text"][name="password"] {
+    height: 38px; /* Same height as other inputs */
+    font-size: 16px; /* Same font size as other inputs */
+    padding-right: 40px; /* Extra padding for show/hide button */
+  }
+  
+  .profile-form input:focus {
+    outline: none;
+    border-color: #007bff; /* Blue border on focus */
+  }
+  
+  /* Red border and visual feedback when there's a validation error */
+  .profile-form .input-container.error input,
+  .profile-form input.error-input {
+    border-color: #dc3545; /* Red border */
+    border-width: 2px;
+  }
+  
+  .profile-form .input-container.error input:focus {
+    border-color: #dc3545; /* Keep red border even when focused */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25); /* Red shadow on focus */
+  }
+    
+  .input-description {
+    height: 30px; /* Adjust the height as needed */
+    /* Add other styles as needed */
+  }
+  
+  .input-container:last-child {
+    margin-bottom: 0; /* Remove margin for the last input container */
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px; /* Match Profile page margin */
+  }
+  
+  .button-container button {
+    padding: 10px 20px; /* Match Profile page padding */
+    color: white;
+    border: none;
+    border-radius: var(--button-border-radius);
+    cursor: pointer;
+    font-size: var(--button-font-size);
+    font-family: inherit;
+    flex: 1; /* Match Profile page flex layout */
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+  }
+  
+  /* Cancel and Clear buttons - grey background */
+  .button-container button[type="button"] {
+    background-color: #6c757d;
+  }
+  
+  .button-container button[type="button"]:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Submit button (Login/Register) - green when enabled, grey when disabled */
+  .button-container button[type="submit"] {
+    background-color: #28a745; /* Green for enabled state */
+  }
+  
+  .button-container button[type="submit"]:hover:not(:disabled) {
+    background-color: #218838;
+  }
+  
+  .button-container button[type="submit"]:disabled {
+    background-color: #6c757d; /* Grey when disabled */
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .button-container button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Password Input with Toggle Button */
+  .password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .password-input-wrapper input {
+    width: 100%;
+    padding-right: 2.5rem; /* Make room for toggle button */
+  }
+
+  .password-toggle-btn {
+    position: absolute;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    color: #666;
+    transition: opacity 0.2s;
+  }
+
+  .password-toggle-btn:hover {
+    opacity: 0.7;
+  }
+  

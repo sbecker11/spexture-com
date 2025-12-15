@@ -1,0 +1,245 @@
+/* User Edit Modal Styles */
+
+.user-edit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.user-edit-modal {
+  background: var(--body-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+.user-edit-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--sidebar-bg);
+}
+
+.user-edit-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.user-edit-modal-body {
+  padding: 1.5rem;
+}
+
+/* User Info Section */
+.user-info-section {
+  background: var(--sidebar-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-info-item {
+  padding: 0.5rem 0;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+.user-info-item strong {
+  color: var(--text-color);
+  opacity: 1;
+  margin-right: 0.5rem;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sidebar-bg);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section h3 {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--sidebar-bg);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  background-color: var(--body-bg);
+  color: var(--text-color);
+}
+
+/* Password Input with Toggle Button */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* Make room for toggle button */
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  color: #666;
+  transition: opacity 0.2s;
+}
+
+.password-toggle-btn:hover {
+  opacity: 0.7;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+  background-color: var(--sidebar-bg);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-note {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.form-error {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #dc3545;
+}
+
+/* Warning Box */
+.warning-box {
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #856404;
+}
+
+.warning-box strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.user-edit-modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  border-top: 1px solid var(--sidebar-bg);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--button-border-radius);
+  font-size: var(--button-font-size);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .user-edit-modal {
+    width: 95%;
+  }
+
+  .user-edit-modal-header,
+  .user-edit-modal-body,
+  .user-edit-modal-footer {
+    padding: 1rem;
+  }
+
+  .user-edit-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+

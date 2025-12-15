@@ -1,0 +1,112 @@
+/* Admin Dashboard Styles */
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.admin-card {
+  background: var(--sidebar-bg);
+  border: 2px solid var(--sidebar-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.admin-card:hover {
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.admin-card-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-card-disabled:hover {
+  border-color: var(--sidebar-bg);
+  box-shadow: none;
+  transform: none;
+}
+
+.admin-card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.admin-card h2 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.admin-card p {
+  color: var(--text-color);
+  opacity: 0.8;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.admin-card-actions {
+  margin-top: auto;
+}
+
+.admin-card-actions span {
+  color: #007bff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.admin-card-disabled .admin-card-actions span {
+  color: #999;
+}
+
+.admin-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.info-card {
+  background: var(--sidebar-bg);
+  border-left: 4px solid #007bff;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.info-card h3 {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.75rem;
+}
+
+.info-card p {
+  color: var(--text-color);
+  opacity: 0.8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-info {
+    grid-template-columns: 1fr;
+  }
+}
+

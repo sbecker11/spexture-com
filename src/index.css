@@ -1,0 +1,56 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global CSS Variables for light/dark mode support with manual toggle */
+
+/* DEFAULT: Light mode */
+:root,
+:root[data-theme="light"] {
+  --link-color: #000000; /* Black for light mode */
+  --text-color: #000000; /* Black text for light mode */
+  --header-bg: #e8e8e8; /* Light grey for light mode - lighter than sidebar */
+  --sidebar-bg: #d3d3d3; /* Medium grey for light mode - darker than header */
+  --footer-bg: #e8e8e8; /* Light grey for light mode - lighter than sidebar */
+  --body-bg: #ffffff; /* White background for light mode */
+  --button-border-radius: 4px; /* Consistent button corner radius */
+  --button-font-size: 16px; /* Consistent button font size */
+}
+
+/* Dark mode (manual toggle or system preference) */
+:root[data-theme="dark"] {
+  --link-color: #ffffff; /* White for dark mode */
+  --text-color: #ffffff; /* White text for dark mode */
+  --header-bg: #2d2d2d; /* Dark grey for dark mode */
+  --sidebar-bg: #3a3a3a; /* Slightly lighter dark grey for dark mode */
+  --footer-bg: #2d2d2d; /* Dark grey for dark mode */
+  --body-bg: #1a1a1a; /* Dark background for dark mode */
+  --button-border-radius: 4px; /* Consistent button corner radius */
+  --button-font-size: 16px; /* Consistent button font size */
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#root > div {
+  width: 100%;
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
